@@ -71,7 +71,6 @@ Activating hostnames for agents in our tailnet is rather simple:
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/84f09eea-4712-4565-b292-4e90b4fc9cb1" width="800">
 
-
 From now on, your devices are known by their machine name within the telnet.  So you can from your smartphone browser access Node-RED by simply navigating to http://your_raspberry_machine_name.your_tailnet_name.ts.net:1880
 
 ## Enable https in your tailnet
@@ -96,9 +95,11 @@ The process of setting up an https connection via Tailscale works like this:
 1. The process starts by executing the command `tailnet cert mytailhost`.
    Note: since the LetsEncrypt certificates have a validity period of 3 months, we will create a cron job dat executes this command monthly.
 2. The Tailscale agent will generate once a key pair, and send a CSR (for common name “mytailhost.mytailnet.ts.net”) to the LetsEncypt servers.  The response will be a small temporary challenge file.
-3. The Tailscale agent will request the Tailscale control servers to make this challenge public available on the domain “mytailhost.mytailnet.ts.net” as a DNS TXT record.
+3. The Tailscale agent will request the Tailscale control servers to make this challenge public available on the domain “your_machine_name.your_tailnet_name.ts.net” as a DNS TXT record.
 4. LetsEncrypt will try to find the challenge on this domain.
 5. When found, LetsEncrypt knows that the Tailscale client owns the domain.  So LetsEncrypt will send the certificate to the Tailscale client.
 6. The Tailscale client will store the certificate in the folder /var/lib/tailscale/certs where our webserver can fetch it, to use it to setup new https connections.
-   
-Note that both files will have owner and group ‘root’, which means the webserver cannot simply read their content.
+
+***CAUTION:*** at this point you have LetsEncrypt certificates generated, but they are ***NOT*** being used yet!
++ Both files (cert and key) will have owner and group ‘root’, which means Node-RED cannot read their content.  Which is good because if Node-RED gets hacked, you don't want to expose your private key.
++ In a next step we will setup a Caddy webserver as reverse proxy, who will setup https connections using our LetsEncrypt certificate.
