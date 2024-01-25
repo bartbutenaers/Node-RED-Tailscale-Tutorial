@@ -71,6 +71,9 @@ Activating hostnames for agents in our tailnet is rather simple:
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/84f09eea-4712-4565-b292-4e90b4fc9cb1" width="800">
 
+
+From now on, your devices are known by their machine name within the telnet.  So you can from your smartphone browser access Node-RED by simply navigating to http://your_raspberry_machine_name.your_tailnet_name.ts.net:1880
+
 ## Enable https in your tailnet
 The data is transferred encrypted between the Tailscale agents in your tailnet, i.e. Tailscale already encrypts all the data using the Wireguard protocol.  However it is still useful to activate https on top of that, because the data is only encrypted ***between*** the Tailscale agents.  As a result, the data that enters at the first agent will leave the second agent in the exact same state.   In other words, the tailnet will simply pass your data transparent (without reading the content):
 
