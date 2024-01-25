@@ -74,7 +74,7 @@ Activating hostnames for agents in our tailnet is rather simple:
 ## Enable https in your tailnet
 The data is transferred encrypted between the Tailscale agents in your tailnet, i.e. Tailscale already encrypts all the data using the Wireguard protocol.  However it is still useful to activate https on top of that, because the data is only encrypted ***between*** the Tailscale agents.  As a result, the data that enters at the first agent will leave the second agent in the exact same state.   In other words, the tailnet will simply pass your data transparent (without reading the content):
 
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/3d2a89ae-ceb0-436d-bc4a-ea78d206ed71)
+![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/fcd1d485-47ea-4bf9-9587-4351829f4947)
 
 There are a few reasons why you should setup a https connection yourself through the encrypted tailnet:
 + When you have very confidential data, and you don’t trust that Tailscale does not read the data (before encrypting it via Wireguard).
