@@ -101,5 +101,14 @@ The process of setting up an https connection via Tailscale works like this:
 6. The Tailscale client will store the certificate in the folder /var/lib/tailscale/certs where our webserver can fetch it, to use it to setup new https connections.
 
 ***CAUTION:*** at this point you have LetsEncrypt certificates generated, but they are ***NOT*** being used yet!
-+ Both files (cert and key) will have owner and group ‘root’, which means Node-RED cannot read their content.  Which is good because if Node-RED gets hacked, you don't want to expose your private key.
++ Both files (cert and key) will have owner and group ‘root’, which means Node-RED cannot read their content.  So you can't simply do this in the Node-RED settings.js file:
+   ```
+   https: function() {
+      return {
+         key: require("fs").readFileSync('/var/lib/tailscale/certs/your_machine_name.your_tailnet_name.ts.net.key'),
+         cert: require("fs").readFileSync('/var/lib/tailscale/certs/your_machine_name.your_tailnet_name.ts.net.crt')
+      }
+   },
+   ```
+   Which is good because if Node-RED gets hacked, you don't want to expose your private key.
 + In a next step we will setup a Caddy webserver as reverse proxy, who will setup https connections using our LetsEncrypt certificate.
