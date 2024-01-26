@@ -19,6 +19,11 @@ There are a few reasons why we would like to connect our Node-RED system to the 
 
 On this readme page you will find a short introduction of each separate item, and you can drill down to see more information about the topic.
 
+## Security basics
+If you want to learn a bit more about security basics, you can read these tutorials:
++ Basics of https
++ Basics of (LetsEncrypt) certificates
+
 ## Avoid port forwarding
 The easiest way to access Node-RED from the internet, is by using port forwarding.  However port forwarding should really avoided, which means that all ports should closed on your modem/router!  See here for more detail.
 
@@ -36,5 +41,6 @@ Tailscale allows you to create a virtual private network (VPN) between all your 
 
 This repository contains some tutorial with Node-RED specific Tailscale information, to help you get started with this:
 + How to access Node-RED via Tailscale, without port forwarding (see here).
++ How to access Node-RED indirectly, via a Tailscale relay connection (see here).
 + How to setup your tailnet, by installing Tailscale agent on your devices (see here).
 + How to setup a tunnel (secured with https and LetsEncrypt certificates), for example to allow Google to send speech commands (see here).
