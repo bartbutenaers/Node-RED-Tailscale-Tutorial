@@ -1,12 +1,12 @@
 # Caddy as reverse proxy
 
-Node-RED uses an ExpressJs webserver for its web application, which runs on top of a NodeJs javascript application server.  The Node-RED web application (inclusive the logon screen) will be served by that webserver:
+Node-RED uses an ***ExpressJs webserver*** for its web application, which runs on top of a NodeJs javascript application server.  The Node-RED web application (inclusive the logon screen) will be served by that webserver:
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/d9a536ef-f08a-4742-ac82-b49cc768edb7)
 
-This means that a hacker - via your logon screen - will arrive on your webserver, where he will be blocked due to incorrect credentials.  But he arrived very close to your Node-RED system on your Raspberry Pi already!
+This means that a hacker will arrive on your webserver, where he will get to see your Node-RED logon screen.  Of course he needs to guess your username and password.  But be aware that as this moment he already arrived very close to your Node-RED system on your Raspberry Pi!
 
-As soon as a hacker has access to the Node-RED logon page, he can exploit the security vulnerabilities of your NodeJs/ExpressJs/Node-RED system.  All these 3 levels work great, but their main target is not security!  Moreover all these levels depend heavily on third-party libraries as dependencies.  And these libraries again depend on other libraries, resulting in a large dependency tree.  If one of these dependencies contains a security vulnerability, then hackers will exploit it to hack your system.
+As soon as a hacker has access to the Node-RED logon page, he can exploit the ***security vulnerabilities*** of your NodeJs/ExpressJs/Node-RED system.  All these 3 levels work great, but their main target is not security!  Moreover all these levels depend heavily on third-party libraries as dependencies.  And these libraries again depend on other libraries, resulting in a large dependency tree.  If one of these dependencies contains a security vulnerability, then hackers will exploit it to hack your system.
 Like the following cartoon explains very clearly:
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/ec1a5528-932c-4a3a-b613-67838ebd9069)
@@ -14,20 +14,50 @@ Like the following cartoon explains very clearly:
 So it is a bad idea to access your Node-RED system directly!  
 
 ## Reverse proxy
-To solve this problem we will add an extra webserver in between, that acts as a reverse proxy (i.e. forward requests to your Node-RED webserver):
+To solve this problem we will add an ***extra webserver*** in between, that acts as a reverse proxy.  A reverse proxy will forward requests to your Node-RED webserver:
 
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/0773b89f-5002-4630-a87f-fb53c761ab4b)
+![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/8607957d-1594-4929-a5d1-27bcefbc8ad8)
 
-Webservers like Nginx, Caddy, … have security as a main target, and they will fix vulnerabilities very quickly.  Which means of course that you will need to update it frequently to the last stable release version!
+Webservers like Nginx, Caddy, … have security as a main target, and they will fix vulnerabilities very quickly.  That is why it is much safer to put those in between the bad internet and your Node-RED/ExpressJs/NodeJs stack.  Which means of course that you will need to ***update it frequently*** to the last stable release version!
 
-Although Nginx is very popular, we will use Caddy instead:
+Although Nginx is a very popular webserver, we will use Caddy instead:
 + Since Caddy 2.5 it supports Tailscale certificates out of the box: when a request arrives for *.ts.net, Caddy will automatically recognize it and use the certificates.
-+ Only the root user and the caddy user can access the private key
 + Caddy runs in a sandboxed environment for added security.
 
 Some remarks about this drawing:
++ It is often advised to run Caddy on a separate machine, to isolate it completely from Node-RED.  That will of course make your physical setup more complex...
 + The Caddy webserver will be executed on your Raspberry Pi as 'caddy' user.  So even if a hacker can hack his way into the Caddy webserver, he can only execute commands with the caddy user that has limited permissions.
-+ When a https request arrives for a Tailnet subdomain (*.ts.net), Caddy will automatically check whether the Tailscale client has generated a LetsEncrypt certificate.  It will use that certificate to setup the SSL connection with the client.
++ When a https request arrives from a client for a Tailnet subdomain (*.ts.net), Caddy will automatically check whether the Tailscale client has generated a LetsEncrypt certificate.  It will use that tailnet.ts LetsEncrypt certificate to setup the SSL connection with the client.
++ Only the root user and the caddy user can access the private key.
++ Afterwards in this repository there will be a tutorial about adding iptables firewall rules on your Raspberry, to make sure that your cannot directly access Node-RED from your home network.  So that you always have to pass Caddy to access Node-RED.  But that is for later...
++ The connection between Caddy and Node-RED is ***plain http***, so no https.  Since the data send between Caddy and Node-RED will not leave your Raspberry Pi, there is no need anymore to encrypt it.  If you still want to to do that and your Node-RED uses self-signed certificates, you will need to tell Caddy explicit (in the below Caddy config file) that he needs to accept your self-signed certificate as valid.  And otherwise you need to make sure that https is disable in your Node-RED settings.js file, as shown below.
+
+## Adjust Node-RED settings
+You might have already setup some basic security in your Node-RED settings.js file, which we will now need to disable again.  Because Caddy will be responsible for the security stuff now, and we want to avoid that both Caddy and Node-RED will do duplicate or even conflicting security related stuff.
+
+1. As explained above, Node-RED should not require https connections anymore.  So disable it in the Node-RED settings.js file:
+   ```
+   //https: {
+   //  key: require("fs").readFileSync('privkey.pem'),
+   //  cert: require("fs").readFileSync('cert.pem')
+   //},
+   //requireHttps: true,
+   ```
+
+2. When Caddy does handle the basic authentication (i.e. request a username and password), the basic authentication in the Node-RED should be turned off.  Otherwise both Caddy and Node-RED will show a logon screen, which means you would have to enter your credentials twice.  So disable it in the Node-RED settings.js file:
+   ```
+   //adminAuth: {
+   //    type: "credentials",
+   //    users: [{
+   //        username: "admin",
+   //        password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
+   //        permissions: "*"
+   //    }]
+   //},
+   ```
+   ***TODO:*** is there a way to have basic authentication for the admin API, but not for the flow editor UI?
+
+3. Restart Node-RED, to make sure these changes become active.
 
 ## Install Caddy on Raspberry Pi
 1. Caddy can be installed on Raspberry using following commands:
@@ -51,30 +81,15 @@ Some remarks about this drawing:
 ## Caddy configuration
 The Caddy configuration is stored in /etc/caddy/Caddyfile.
 
-To make sure Caddy can implement the forwarding described in the above diagram, the Caddy configuration should behave like this:
-+ Listen to port 8443 for https requests.  The reason we don't use the default https port (443) is that this port is already being used by the Tailscale agent process on our Raspberry.
+To implement the setup described in the above diagram, the Caddy configuration should behave like this:
++ Listen to port 8443 for https requests.
+   Note: it would be easier if we would use the standard https port 443.  Because you don't need to specify that port 443 in your url's.  Indeed when you use https, your browser will automatically add port 443 to your request as a default https port (if no port has been specified).  However the Tailscale agent process (running on the same Raspberry Pi) is already using port 443 to allow communication by the Tailscale Control servers!
 +	Ignore all requests that don't arrive from the machines in our tailnet (to limit access), i.e. only from IP addresses 100.x.y.z
-+	When the Node-RED dashboard is being accessed, you perhaps might not ask a username and password.  To make it a bit more comfortable for e.g. using it on tablets inside the house. But of course you can ask a username and password also for your dashboard.  ***TODO:*** is this acceptable or not?
-+	When the Node-RED flow editor is being accessed, Caddy needs to ask username and password before forwarding this request to Node-RED.  Because it is better to block users inside Caddy, instead of inside Node-RED.
++	When the Node-RED dashboard is being accessed, you perhaps might not want to show a logon screen to request a username and password.  Because it is only accessible via devices part of your tailnet.  Having to enter the credentials over and over again in a home automation system is quite not-user-friendly. 
++	When the Node-RED flow editor is being accessed, Caddy needs to ask username and password before forwarding this request to Node-RED.  Of course your flow editor is only accessible from devices within your tailnet, but imho it is better to have this extra layer of security.   
+   Note: it is better to show a logon screen in Caddy, instead of using the Node-RED logon screen.  Because as mentioned above, we want to keep malicious users as far away from our Node-RED/ExpressJs/NodeJs stack as possible...
 
-When Caddy does handle the basic authentication (i.e. request a username and password), the basic authentication in the Node-RED settings.js file should be turned off:
-```
-/** To password protect the Node-RED editor and admin API, the following
- * property can be used. See https://nodered.org/docs/security.html for details.
- */
-//adminAuth: {
-//    type: "credentials",
-//    users: [{
-//        username: "admin",
-//        password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
-//        permissions: "*"
-//    }]
-//},
-```
-Otherwise the Node-RED logon screen would appear after you passed the Caddy logon screen, resulting in having to enter your credentials twice.
-***TODO:*** is there a way to have basic authentication for the admin API, but not for the flow editor UI?
-
-Such a Caddy config could look like this:
+Such a typical Caddy config could look like this:
 ```
 (common_checks) {
     # Only allow access from a Tailscale private IP address range, which is by default from 100.64.0.0 to 100.127.255.255.
@@ -172,6 +187,21 @@ your-tailscale-machine-name.your-tailnet-name.ts.net:3000 {
 ```
 Some remarks:
 + We use 3 different log files to separate the logs a bit functionally.
-+ In an initial test phase it makes life a bit easier to troubleshoot by having clear `respond` error messages.  However once everything is up and running, you might make this message texts a bit more cryptic, to avoid giving hackers to much clues about what is going wrong...
++ In an initial test phase it makes troubleshooting easier by having clear `respond` error messages.  However once everything is up and running, you might make these message texts a bit more cryptic, to avoid giving hackers to much clues about what is going wrong...
 + The password hash can be calculated using the command `caddy hash-password`. 
 + You need to restart Caddy every time you have changed the above config file (via `sudo systemctl restart caddy`).
+
+## Check your certificate
+Let's now test end-to-end whether everything works fine.
+
+1. Navigate in your browser (on a device where a Tailscale agent is running) to your Node-RED flow editor app:
+   https://your-machine-name.your-tailnet-name.ts.net:your-node-red-port/your-http-admin-root-if-available
+2. If everything is fine, your browser should show you that your connection is secure.
+3. You can now look at your LetsEncrypt certificate.  At this moment I can show it in my Chrome browser in a few steps, as shown in the following screenshot.  But Google changes their menu structure often, and for other browsers it will be different:
+
+   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e9772288-9ddd-4168-9635-fa816ed9cdbd)
+
+4. Your browser will determine that your connection is secure, by checking 3 things in your certificate:
+   + The certificate is ***issued to*** the hostname where you have been navigating to (i.e. same hostname as in your url).  Because that means it is the certificate of that particular machine.
+   + The ceritifcate is ***issued by*** a certified Certification Authority that the browser trusts, in this case LetsEncrypt.
+   + The certificate is still valid, because the validity period (of 3 months for LetsEncrypt certificates) is still not exceeded.
