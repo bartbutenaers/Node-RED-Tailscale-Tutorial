@@ -38,29 +38,6 @@ Tailnet agents can be installed on various platforms.  Since a tailnet needs min
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/b66a4b4a-fcd7-44ec-87a9-38bfd31c8994" width="800">
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-TODO DNS is hier niet nodig.  Je kan gewoon dat node-red http of https moet doen en dan voorbeeld geven om naar een ip adress virtueel te surfen
-Onderstaande moet in een aparte tutorial
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Note: In the DNS tabsheet you can also find the name of your tailnet:
 
-## Configure DNS in your tailnet
-It is adviced to specify a virtual hostname for every Tailnet agent in your tailnet, because working with DNS has some advantages:
-+ Hostnames are easier to remember compared to IP addresses.
-+ It is not possible to request LetsEncrypt certificates for IP addresses (as common name).
-
-Activating hostnames for agents in our tailnet is rather simple:
-1. In the tabsheet *“Machines”* your see that every agent has received a virtual IP address 100.x.y.z:
-
-   <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/153777f7-5822-4782-9ba6-8298828800ab" width="800">
- 
-2. Via the “…” button you can (via menu *“Edit Machine Name”*) enter a logical virtual hostname.
-3. Enable MagicDNS (in the DNS tabsheet), in order to be able to use the machine names in the tailnet via DNS:
-
-   <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/28820a23-31c9-436d-835c-c0061e0dc595" width="500">
-
-4.	In the DNS tabsheet you can also find the name of your tailnet:
-
-    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/84f09eea-4712-4565-b292-4e90b4fc9cb1" width="800">
-
-From now on, your devices are known by their machine name within the telnet.  So you can from your smartphone browser access Node-RED by simply navigating to http://your_raspberry_machine_name.your_tailnet_name.ts.net:1880
-
+<img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/84f09eea-4712-4565-b292-4e90b4fc9cb1" width="800">
