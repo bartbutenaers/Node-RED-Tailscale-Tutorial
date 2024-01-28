@@ -38,19 +38,10 @@ Tailnet agents can be installed on various platforms.  Since a tailnet needs min
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/b66a4b4a-fcd7-44ec-87a9-38bfd31c8994" width="800">
 
-## Tailscale control servers
-Tailscale offers a worldwide cluster of control servers which have multiple tasks:
-+ DHCP server to assign virtual IP addresses (100.x.y.z) to Tailscale agents in your tailnet.
-+ Host the admin console, where you can manage your tailnet.  
-   Note: The admin console is only accessible via your identity provider.
-+ Store the public LetsEncrypt certificates for all Tailnet agents, and distribute those to the other agents in your tailnet.
-+ And so on...
-
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/6d68c4b7-82d0-4747-9c2d-01bee18effd5)
-
-1. Navigate to the control servers via https://login.tailscale.com/admin
-2. Logon to your tailnet via your identity provider
-3. In the next sections we will configure our tailnet.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+TODO DNS is hier niet nodig.  Je kan gewoon dat node-red http of https moet doen en dan voorbeeld geven om naar een ip adress virtueel te surfen
+Onderstaande moet in een aparte tutorial
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 ## Configure DNS in your tailnet
 It is adviced to specify a virtual hostname for every Tailnet agent in your tailnet, because working with DNS has some advantages:
@@ -73,42 +64,3 @@ Activating hostnames for agents in our tailnet is rather simple:
 
 From now on, your devices are known by their machine name within the telnet.  So you can from your smartphone browser access Node-RED by simply navigating to http://your_raspberry_machine_name.your_tailnet_name.ts.net:1880
 
-## Enable https in your tailnet
-The data is transferred encrypted between the Tailscale agents in your tailnet, i.e. Tailscale already encrypts all the data using the Wireguard protocol.  However it is still useful to activate https on top of that, because the data is only encrypted ***between*** the Tailscale agents.  As a result, the data that enters at the first agent will leave the second agent in the exact same state.   In other words, the tailnet will simply pass your data transparent (without reading the content):
-
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/fcd1d485-47ea-4bf9-9587-4351829f4947)
-
-There are a few reasons why you should setup a https connection yourself through the encrypted tailnet:
-+ When you have very confidential data, and you don’t trust that Tailscale does not read the data (before encrypting it via Wireguard).
-+ When the receiver expects https (based on signed certificates), like for example the Google Action Console servers.
-
-In the tabsheet *"DNS"* you can enable https:
-
-<img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/07aa2e7d-546f-443a-9801-cf9cc51b3156" width="500">
-
-When https is enabled, this only means that the Tailscale agents are informed that they are allowed to request a LetsEncrypt certificate.  You are responsible yourself to trigger that request, and to use the resulting certificates to setup an https connection!
-
-The process of setting up an https connection via Tailscale works like this:
-
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/317d052a-4935-44ff-b063-5d83c0849843)
-
-1. The process starts by executing the command `tailnet cert mytailhost`.
-   Note: since the LetsEncrypt certificates have a validity period of 3 months, we will create a cron job dat executes this command monthly.
-2. The Tailscale agent will generate once a key pair, and send a CSR (for common name “mytailhost.mytailnet.ts.net”) to the LetsEncypt servers.  The response will be a small temporary challenge file.
-3. The Tailscale agent will request the Tailscale control servers to make this challenge public available on the domain “your_machine_name.your_tailnet_name.ts.net” as a DNS TXT record.
-4. LetsEncrypt will try to find the challenge on this domain.
-5. When found, LetsEncrypt knows that the Tailscale client owns the domain.  So LetsEncrypt will send the certificate to the Tailscale client.
-6. The Tailscale client will store the certificate in the folder /var/lib/tailscale/certs where our webserver can fetch it, to use it to setup new https connections.
-
-***CAUTION:*** at this point you have LetsEncrypt certificates generated, but they are ***NOT*** being used yet!
-+ Both files (cert and key) will have owner and group ‘root’, which means Node-RED cannot read their content.  So you can't simply do this in the Node-RED settings.js file:
-   ```
-   https: function() {
-      return {
-         key: require("fs").readFileSync('/var/lib/tailscale/certs/your_machine_name.your_tailnet_name.ts.net.key'),
-         cert: require("fs").readFileSync('/var/lib/tailscale/certs/your_machine_name.your_tailnet_name.ts.net.crt')
-      }
-   },
-   ```
-   Which is good because if Node-RED gets hacked, you don't want to expose your private key.
-+ In a next step we will setup a Caddy webserver as reverse proxy, who will setup https connections using our LetsEncrypt certificate.
