@@ -38,6 +38,32 @@ Tailnet agents can be installed on various platforms.  Since a tailnet needs min
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/b66a4b4a-fcd7-44ec-87a9-38bfd31c8994" width="800">
 
-Note: In the DNS tabsheet you can also find the name of your tailnet:
+## Show the tailnet devices
+Now that you hace added some devices to your tailnet, you can have a first look at your virtual network:
 
-<img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/84f09eea-4712-4565-b292-4e90b4fc9cb1" width="800">
+1. Logon to the ***admin console*** on the Tailscale Control servers:
+   
+2. In the *"Machines"* tabsheet you can find a list of the devices in your tailnet:
+
+   <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/228aa24a-94c3-41c1-9e46-d5b82de2837d" width="800">
+
+   Every device has been assigned a virtual hostname and a fixed virtual ip address 100.x.y.z
+
+4. In the *"DNS"* tabsheet you can also find the name of your tailnet:
+
+   <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/ee30fb1d-2203-4234-b862-331b80cf05df" width="800">
+
+   You can change this name, but you are limited to select a name from a list of automatically generated tailnet names.
+
+## Access a virtual device
+A first test is to check whether you can access (on your smartphone browser) your Node-RED dashboard:
+
+1. Enter the virtual IP address of your Raspberry Pi in the browser on your smartphone:
+
+   `http://your-device-virtual-ip-address:1880/ui`
+
+2. If everything went well, the Tailscale agent on your smartphone should forward the browser http request to the Tailscale agent on your Raspberry Pi:
+
+   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/7fdbf983-e8cd-4498-8d2a-09d7521fd22c)
+
+3. In the next tutorials we will learn how to use a DNS name instead of an IP address, and how to setup https instead of http.
