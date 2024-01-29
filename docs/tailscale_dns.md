@@ -22,3 +22,5 @@ Activating hostnames for agents in our tailnet is rather simple:
 
 4. You can test this by navigating in your browser to the virtual host name of your Raspberry Pi, in order to open the Node-RED flow editor:
    http://your_device_name.your_tailnet_name.ts.net:1880/your-http-admin-root-path-if-available
+
+   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/a70b10b3-c061-4c69-b9fc-793820c128a0)
