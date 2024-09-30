@@ -51,7 +51,7 @@ Let's see how such a P2P mesh network looks like.  Suppose you want to access yo
 ## Tailscale for Node-RED
 This tutorial describes how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
 
-1. First we try to get an ***overview*** of our setup, because that gives us some insights in what is needed and how Tailscale can help us with that.
+1. First we try to get an ***overview*** of our setup, to get some insights in how Tailscale can access Node-RED even when no port forwarding is setup on our modem/router: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_node_red.md).
 2. Optionally you might read about the Tailscale ***relay*** servers, which will be useful in case of bad connections: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_relay.md).
 3. Optionally you might read about the Tailscale ***control*** servers, which distribute your tailnet information from your account to all your Tailscale agents: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_control.md).
 4. Setup your own ***tailnet***, by creating a Tailscale account and install some agents on your devices (which are added to your tailnet): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_setup.md).
