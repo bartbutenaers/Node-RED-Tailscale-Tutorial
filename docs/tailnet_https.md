@@ -9,7 +9,11 @@ So the tailnet will simply pass your data transparent (without reading or changi
 
 There are a few reasons why you should setup a ***https*** connection through the encrypted tailnet:
 + When you have very confidential data, and you don’t trust that Tailscale does not read the data (before encrypting it via Wireguard).
-+ When the receiver expects https (based on signed certificates), like for example the Google Action Console servers.
++ When the receiver expects https (based on signed certificates), like for example the Google Action Console servers (to receive voice commands from a Google Home device).
++ When web-push notifications are being used in the Node-RED dashboard, because modern browsers only allow such notifications when https is used (based on signed certificates like e.g. LetsEncrypt).
++ And so on ...
+
+Anyway it would be handy overall if you can use https all over the place, even within your home network (i.e. within your LAN).
 
 ## Enable https
 In the tabsheet *"DNS"* of your Tailscale admin console, you can enable https:
