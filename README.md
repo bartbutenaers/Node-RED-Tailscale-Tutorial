@@ -56,7 +56,8 @@ This tutorial describes how to get started with Tailscale.  The information is s
 3. Optionally you might read about the Tailscale ***control*** servers, which distribute your tailnet information from your account to all your Tailscale agents: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_control.md).
 4. Setup your own ***tailnet***, by creating a Tailscale account and install some agents on your devices (which are added to your tailnet): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_setup.md).
 5. Once you have your own tailnet, it is useful to give each device a (virtual) logical hostname within your mesh network (for easy access).  So DNS needs to be setup: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_dns.md).
-6. At last we want all our traffic to become ***https*** based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_https.md).
+6. Make sure all our traffic to become ***https*** based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_https.md).
+7. Finally setup a public tunnel (called ***funnel***) so third party services can access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 
 ## Disclaimer
 
@@ -65,13 +66,3 @@ I’ve gathered these tips and tricks through my personal experiences and resear
 It’s also worth noting that this documentation is public, and could be read by anyone, including potential hackers. This means that there’s no *“security by obscurity”* - the security measures outlined here are based on their inherent strength, not their secrecy.
 
 ***Please be aware that I cannot be held responsible in any way if your system is compromised. This holds true even if the information I’ve shared is incomplete or incorrect. Implementing security measures and maintaining the security of your system is a complex task that ultimately lies with you.***
-
-Please use this information as a starting point and consider consulting with a cybersecurity professional to ensure your system is as secure as it can be.
-
-But as soon as you want to have a bit more functionality, you will need to do a bit more of reading:
-
-This repository contains some tutorial with Node-RED specific Tailscale information, to help you get started with this:
-+ How to access Node-RED via Tailscale, without port forwarding (see here).
-+ How to access Node-RED indirectly, via a Tailscale relay connection (see here).
-+ How to setup your tailnet, by installing Tailscale agent on your devices (see here).
-+ How to setup a tunnel (secured with https and LetsEncrypt certificates), for example to allow Google to send speech commands (see here).
