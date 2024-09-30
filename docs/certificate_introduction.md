@@ -2,16 +2,16 @@
 
 During the SSL/TLS handshake between a client and a server, the server will return its public key.  Based on that public key, we can setup a secure https connection between the client and the server.
 
-But how do we know that the public key that we receive is being send from the real server?  Because a hacker could intercept our https  request and send his own public key.  Then we setup a secure https connection, but not to the real server.  Instead we would setup a secure https connection to the hacker’s server, where all our condifidential data can be decrypted and read:
+But how do we know that the public key that we receive is being send from the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept our https request to the server and send his own fake public key, pretending it to be our server's public key.  In that case we would setup a secure https connection, but not to the real server.  Instead we would setup a secure https connection to the hacker’s server, where all our condifidential data could be decrypted by the hacker (via its private key):
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/23459b16-e9f8-4f46-979e-4932beb5240e)
 
-This can only be solved to add some information to our server's public key, so we know that the public key belongs to our server.  That ***certificate signing*** process goes like this:
+This can only be solved to add some information to our server's public key, so we know that the received public key belongs to our own server.  To do that, our public key needs to be signed by a trusted party.   Such a ***certificate signing*** process goes like this:
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/1321b2ba-70f9-4ec9-8bd1-b8e736544279)
 
 1. On your server you can create a ***CSR*** (Certificate Signing Request) containing both your public key and some metadata about your server: for example the ‘common name’ (CN) which is the hostname of the server. 
-2. That CSR is send to a ***CA*** (Certificate Authority), which is a trusted organization that is certified to create digital certificates.  They create a certificate, based on a CSR to which they add some extra signing information: 
+2. That CSR is send to a ***CA*** (Certificate Authority), which is a trusted organization that is certified to create digital certificates.  They create a certificate, based on a CSR to which they add the following signing information: 
    + A validity period: for most CA’s (GlobalSign, VeriSign, …) the period is 1 year.  But for LetsEncrypt it is 3 months.
    + Digital signature: they create a hash of the certificate and encrypt that hash using their private key.  Afterwards any client can also calculate that hash, which should be the same as the hash from the CA.
 3. The CA returns the certificate, which is a combination of a couple of things:
