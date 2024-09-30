@@ -30,7 +30,7 @@ Some of those available services also offer a limited free version, which will b
 | Cloudflare (Zero Trust)  | Easy to setup  | Pretty complex to setup  |
 | Ngrok  | Very easy to setup  | No Letsencrypt certificates, limited traffic, ...  |
 
-Not saying that these solutions are no good!  They are very popular choices, but they simply didn't match my use case:
+Not saying at all that these solutions are no good!  They are very popular choices, but they simply didn't match my personal use case:
 + My free time is too limited to setup and maintain something complex like Cloudflare.
 + One day I will need to explain my wife and kids how stuff works in our house, in case I ever won't be around anymore.  Which won't be an easy one, so I 'try' to keep it as simple as possible...
 + I don't want to make my setup complex, by having to setup my own reverse proxy (like e.g. Caddy, Nginx, ...).  I want my networking service to take care of that too.
@@ -48,8 +48,15 @@ Let's see how such a P2P mesh network looks like.  Suppose you want to access yo
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
 
-In fact it works quite simple.  You can get started with this easily by installing some agents, as described here.
---> dus gewoon 2 agents opzetten en http in Node-RED afzetten.
+## Tailscale for Node-RED
+This tutorial describes how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
+
+1. First we try to get an ***overview*** of our setup, because that gives us some insights in what is needed and how Tailscale can help us with that.
+2. Optionally you might read about the Tailscale ***relay*** servers, which will be useful in case of bad connections: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_relay.md).
+3. Optionally you might read about the Tailscale ***control*** servers, which distribute your tailnet information from your account to all your Tailscale agents: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_control.md).
+4. Setup your own ***tailnet***, by creating a Tailscale account and install some agents on your devices (which are added to your tailnet): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_setup.md).
+5. Once you have your own tailnet, it is useful to give each device a (virtual) logical hostname within your mesh network (for easy access).  So DNS needs to be setup: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_dns.md).
+6. At last we want all our traffic to become ***https*** based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_https.md).
 
 ## Disclaimer
 
