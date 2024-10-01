@@ -4,6 +4,10 @@ I created this repository to share my insights on setting up security for a Node
 
 After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  Hopefully my articles can help users to get started with Tailscale for Node-RED.
 
+During this tutorial we will discuss how to secure access for a typical Node-RED home automation system:
++ Access the Node-RED dashboard when you are not home from an Android smartphone.
++ Allow Google Assistant to access Node-RED to be able to execute actions for voice commands.
+
 ## The big bad internet
 Some people simply say that Node-RED should be used only offline, to avoid malicious users accessing it from the internet.  However in that case a lot a lot of use cases for Node-RED would get lost.  Here are a few reasons to connect our Node-RED system to the (dangerous) internet, for example:
 +	View the Node-RED dashboard remotely to watch video footage from IP cameras, to keep an eye on your house will not being at home.
