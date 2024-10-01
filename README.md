@@ -2,58 +2,52 @@
 
 I created this repository to share my insights on setting up security for a Node-RED system.  This repository contains articles about setting up Tailscale to secure access to Node-RED.
 
-After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  Hopefully my articles can help users to get started with Tailscale for Node-RED.
-
-During this tutorial we will discuss how to secure access for a typical Node-RED home automation system:
-+ Access the Node-RED dashboard when you are not home from an Android smartphone.
-+ Allow Google Assistant to access Node-RED to be able to execute actions for voice commands.
+After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why ***port-forwarding should be avoided!***
 
 ## The big bad internet
-Some people simply say that Node-RED should be used only offline, to avoid malicious users accessing it from the internet.  However in that case a lot a lot of use cases for Node-RED would get lost.  Here are a few reasons to connect our Node-RED system to the (dangerous) internet, for example:
-+	View the Node-RED dashboard remotely to watch video footage from IP cameras, to keep an eye on your house will not being at home.
+Obviously when you use Node-RED offline, you can minimize the risk of malicious users accessing your system.  However there are a number of nice use cases, that will only work by connecting Node-RED to the internet:
++	View the Node-RED dashboard remotely, to keep an eye on your house while not being at home.
 +	Pass speech commands to a Google Home device, which will send them (via the Google Action servers) to the endpoint of the node-red-contrib-google-smarthome node.
 + And so on...
 
 ## Security basics
-The following pages give some more detail about some of the stuff being used in this repository.  This information is ***NOT*** required to get started quickly, but it will give you some background information about how stuff works behind the scenes.  
+The following articles give some more technical details about some of the terminology used in this repository.  It is ***NOT*** required to read this, but it will give you some background information about how stuff works behind the scenes.  
 
 + ***Basics of https***: explains why you need a private key and public key for https (see [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/https_introduction.md)).
 + ***Basics of (LetsEncrypt) certificates***: explains why you need LetsEncrypt certificates (see [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/certificate_introduction.md)).
-+ ***Avoid port forwarding***: explains why port forwarding is a bad idea (see [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md)).
 
-## Use Tailscale to access Node-RED
-Since we don't want to use port forwarding to access our Node-RED system, we need another way to achieve that.
+## Why using Tailscale
+To setup a secure network connection to your Node-RED system (flow editor, dashboard and local endpoints) from the internet, it is higly advised to use a trusted ***networking service***.  Such a service is used between Node-RED and the internet, to handle all the complex security stuff.  You could install your own software locally to achieve a similar result, but then you will be responsible to setup and maintain it (e.g. install security patches as soon as a vulnerability is being reported).  That would become a tough nut to crack.  Let those security experts do their job, while you have have time to do fun stuff with Node-RED meanwhile ;-)
 
-To setup a secure network connection to your Node-RED system (flow editor, dashboard and local endpoints) from the internet, it is advised to use a trusted ***networking service*** in between.  Such third-party services take care of all the complex security stuff, and they make sure that security patches are being installed as soon as available.  You can never achieve a similar result on your own.  Let those security experts do their job, while you have have time to do some more fun stuff with Node-RED meanwhile ;-)
-
-Some of those available services also offer a limited free version, which will be most of the time sufficient for a simple home automation system.  Some well known examples of such services:
+Some of those available services also offer a limited free version, which will be most of the time sufficient for a simple home automation system.  The following table shows some well-known services with a limited free version:
 
 | Network service  | Advantages | Disadvantages |
 | ------------- | ------------- | ------------- |
 | ZeroTier  | Easy to setup  | No Letsencrypt certificates, no tunnels, ...  |
-| Cloudflare (Zero Trust)  | Easy to setup  | Pretty complex to setup  |
+| Cloudflare (Zero Trust)  | Lots of features  | Pretty complex to setup  |
 | Ngrok  | Very easy to setup  | No Letsencrypt certificates, limited traffic, ...  |
 
-Not saying at all that these solutions are no good!  They are very popular choices, but they simply didn't match my personal use case:
+These services are very decent and popular choices, but they simply didn't match my personal use case:
 + My free time is too limited to setup and maintain something complex like Cloudflare.
-+ One day I will need to explain my wife and kids how stuff works in our house, in case I ever won't be around anymore.  Which won't be an easy one, so I 'try' to keep it as simple as possible...
-+ I don't want to make my setup complex, by having to setup my own reverse proxy (like e.g. Caddy, Nginx, ...).  I want my networking service to take care of that too.
-+ I don't want any security related stuff inside Node-RED anymore, because Node-RED is powerfull so it would not be difficult for a hacker to disable such security (once he would have arrived inside Node-RED).  So for example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should take care of the Letsencrypt certifiates too.
-+ I don't want to setup my own filters (e.g. ip address whitelist, ...) to stop unauthorized devices from accessing my Node-RED system.  The network service should take care of such access control too.
++ One day I will need to explain my wife and kids how stuff works in our house, in case I ever won't be around anymore.  Which will be FAR from easy, so I 'try' to keep it as simple as possible...
++ I don't want to make my setup too complex, by having to setup my own reverse proxy (like e.g. Caddy, Nginx, ...).  I want my networking service to take care of that too.
++ I don't want any security related stuff inside Node-RED anymore, because the powers of Node-RED can be abused by hackers to disable its own security (once he would have arrived inside Node-RED).  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should take care of the Letsencrypt certifiates too.
++ I don't want to setup my own client access control system (e.g. ip address whitelist, ...) to stop unauthorized devices from accessing my Node-RED system.  The network service should take care of such access control too.
 
-After a while I decided to use *Tailscale*.  Because it offers all the security features that I need, and it is 'quite' understandable.  Although I had some hard time to figure out from their documentation how I had to configure it for my long list of requirements.  Hopefully my tutorial gives you a general idea of what is needed, and how it can be implemented.
+Tailscale offers all the security features that I need, and it is 'quite' understandable.  Hopefully my tutorial gives you a general idea of how Tailscale can be used to achieve the above requirements.
 
-Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, on which you have a Tailscale ***agent*** installed.  In contradiction to a normal VPN, it offers a ***peer-to-peer mesh network (called tailnet)***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Due to these direct connections between your devices offer multiple advantages:
-+ The data connections are very fast.
-+ There are no traffic volume limitations.
-+ It will even work when their cloud servers would be unaccessible (unless you use their relay service).
+## Introduction to Tailscale
+Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, on which you have a Tailscale ***agent*** installed.  In contradiction to a normal VPN, Tailscale offers a ***peer-to-peer mesh network (called tailnet)***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Such direct connections between your devices offer multiple advantages:
++ The data can be exchanged very fast via such connections.
++ There are no traffic volume limitations, which is useful when transferring lots of data (e.g. video footage from IP cameras).
++ The tailnet will even continue working, even when the Tailscale servers would become temporarily unaccessible (unless you use their relay service).
 
-Let's see how such a P2P mesh network looks like.  Suppose you want to access your Node-RED dashboard on your smartphone, with all ports closed on your modem/router.  You install a Tailscale agent both on your smartphone and your Raspberry Pi, where Node-RED is running.  After you add both devices in your Tailscale account, they become part of your own custom ***tailnet*** (which is they call a virtual private mesh network).  That means both devices can now communicate directly to each other via their Tailscale agents.  So if you navigate with your smartphone browser to the (virtual!) hostname of your Raspberry Pi, you will see your dashboard:
+When you want to access your Node-RED dashboard (running on a Raspberry Pi) from your smartphone, you need to install a Tailscale agent both on your Raspberry Pi and your smartphone.  Once you have added both devices (i.e. Tailscale agents) in your Tailscale account, they become part of your own ***tailnet***.  As a result both devices can communicate directly to each other via their Tailscale agents.  This means you can navigate with your smartphone browser to the (virtual!) hostname of your Raspberry Pi, to see your Node-RED dashboard:
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
 
 ## Tailscale for Node-RED
-This tutorial describes how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
+This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
 
 1. First we try to get an ***overview*** of our setup, to get some insights in how Tailscale can access Node-RED even when no port forwarding is setup on our modem/router: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_node_red.md).
 2. Optionally you might read about the Tailscale ***relay*** servers, which will be useful in case of bad connections: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_relay.md).
