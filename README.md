@@ -56,6 +56,10 @@ When you want to access your Node-RED dashboard (running on a Raspberry Pi) from
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
 
+Note that this way there is no need to implement access control anymore inside Node-RED, like e.g. IP address whitelisting to limit the client devices that can access Node-RED.  Since only your own devices (from your tailnet) can access Node-RED remotely, you can even simplify your setup even more:
++ Remove the logon screen from your Node-RED dashboard, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the familly.
++ Keep the logon screen for the flow editor, because it is still better to secure your flows with an extra protection.  Moreover probably not everybody in your familly will use the flow editor, and you won't use it as often as your dashboard.
+
 ## Tailscale for Node-RED
 This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
 
