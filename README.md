@@ -58,8 +58,7 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 7. Finally setup a public tunnel (called ***funnel***) so third party services can access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 
 ## Disclaimer
-
-I’ve gathered these tips and tricks through my personal experiences and research. However, it’s important to note that while I try to strive for accuracy, I’m not an expert in this field.  The information provided in this repository is intended to be a helpful guide, but it’s not exhaustive or infallible. Security is a complex and ever-evolving field, and what works today might not be sufficient tomorrow. Therefore, while these suggestions can enhance your system’s security, they don’t guarantee complete protection against all potential threats.
+It is important to note that while I try to strive for accuracy, I’m not an expert in this field.  The information provided in this repository is intended to be a helpful guide, but it’s not exhaustive or infallible. While this information can enhance your system’s security, there is no guarantee for complete protection against all potential threats.
 
 It’s also worth noting that this documentation is public, and could be read by anyone, including potential hackers. This means that there’s no *“security by obscurity”* - the security measures outlined here are based on their inherent strength, not their secrecy.
 
