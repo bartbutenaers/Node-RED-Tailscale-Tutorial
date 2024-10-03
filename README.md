@@ -4,6 +4,8 @@ I created this repository to share my insights on setting up security for a Node
 
 After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why ***port-forwarding should be avoided!***
 
+The complete documentation of Tailscale can be found [here](https://tailscale.com/kb/1017/install).
+
 ## The big bad internet
 Obviously when you use Node-RED offline, you can minimize the risk of malicious users accessing your system.  However there are a number of nice use cases, that will only work by connecting Node-RED to the internet:
 +	View the Node-RED dashboard remotely, to keep an eye on your house while not being at home.
