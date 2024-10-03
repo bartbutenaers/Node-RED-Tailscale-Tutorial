@@ -15,7 +15,7 @@ You need to create a Tailscale account once:
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/8bcdd254-a80c-4bbf-ad33-cfd255373e5d" width="300">
 
-6. Optionally: it is even more safe if you have enabled 2-factor authentication on your identity provider account, because then you will have to enter extra a verification code (which you need to generate using the Google Authenticator app on your smartphone).
+6. Optionally: it is even more safe if you have enabled 2-factor authentication on your identity provider account, because then you will have to enter extra a verification code (which you need to generate using the Google Authenticator app on your smartphone) when logging into your security provider.
 7. When logged in at your identity provider, your provider will ask you whether it is ok that Tailscale wants to access your provider account (to read some minimal info like e.g. your email address):
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/8bed9d0b-7cd1-4327-bbfc-1ce66410ab02" width="300">
@@ -36,7 +36,7 @@ Tailscale agents can be installed on various platforms.  Since a tailnet needs m
 
 3.	And at last install a third Tailscale agent on your Raspberry Pi running Node-RED (see ‘manual’ instructions [here](https://tailscale.com/download/linux/rpi) or specific for the Bookworm version [here](https://pkgs.tailscale.com/stable/#raspbian-bookworm)).
   
-    Remark: after you executed the command “sudo tailscale up”, an authorization url will be displayed in the console.  Paste that url in a browser on any device, and once it is authenticated in your tailnet, the text 'Success' will appear in your command line:
+    Remark: after you executed the command `sudo tailscale up`, an authorization url will be displayed in the console.  Paste that url in a browser on any device, and once it is authenticated in your tailnet, the text 'Success' will appear in your command line:
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/b66a4b4a-fcd7-44ec-87a9-38bfd31c8994" width="800">
 
@@ -58,28 +58,30 @@ Now that you hace added some devices to your tailnet, you can have a first look 
    You can change this name, but you are limited to select a name from a list of automatically generated tailnet names.
 
 ## Approve devices
-So when a device is registered, it will join your tailnet automatically.  You can secure your tailnet even morey, by requiring every new device to be approved manually:
+When a device is registered, it will join your tailnet automatically.  But you can secure your tailnet even more, by requiring every new device to be approved manually:
 
 1. Login to the admin console
 2. Activate once (in the *"Settings"* tabsheet) the manual device approval procedure:
 
    ![image](https://github.com/user-attachments/assets/1ea50a95-b406-4c16-a4ce-0755cb74dd1f)
 
-3. Once a new device has requested to join your tailnet, you will see that in the *"Machines"* tabsheet:
+3. Afterwards when a new device has requested to join your tailnet, you will see in the *"Machines"* tabsheet that you need to approve the device (before it can join your tailnet):
 
    ![image](https://github.com/user-attachments/assets/90b64190-95a3-46c8-b230-4ff74ef3e31b)
 
 4. Click on the `...` button for the new device, and click on the *"Approve"* menu item.
 
 ## Access a virtual device
-A first test is to check whether you can access (on your smartphone browser) your Node-RED dashboard:
+Test whether you can access (on your smartphone browser) your Node-RED dashboard via https:
 
 1. Enter the virtual IP address of your Raspberry Pi in the browser on your smartphone:
 
    `http://your-device-virtual-ip-address:1880/dashboard`
 
-2. If everything went well, the Tailscale agent on your smartphone should forward the browser http request to the Tailscale agent on your Raspberry Pi:
+2. If everything went well, the Node-RED dashboard should appear:
 
    ![image](https://github.com/user-attachments/assets/df585c26-46a8-421a-a2b7-183733f560fd)
 
-3. In the next tutorials we will learn how to use a DNS name instead of an IP address, and how to setup https instead of http.
+3. Have now a look at your LetsEncrypt certificate, to check whether it is from LetsEncrypt.  For example in Chrome:
+
+   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e9772288-9ddd-4168-9635-fa816ed9cdbd)
