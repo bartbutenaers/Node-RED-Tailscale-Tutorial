@@ -31,40 +31,36 @@ In our case we want a https connection to Node-RED, which means we will need to 
 
 It is possible to ask a Tailscale agent to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However it is much easier to just tell the agent that you need a https connection on a specified port, and then the agent will automatically take care of everything:
 
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/317d052a-4935-44ff-b063-5d83c0849843)
+![image](https://github.com/user-attachments/assets/b9cf102e-7f7d-47bf-a9c7-33057dc4cf67)
 
-1. Execute the command `tailscale funnel --https=443 ...` to expose a local service respectively public on the internet, or `tailscale serve --https=9123 ...` to expose that service private within your tailnet.
-
-2. In both cases, the Tailscale agent knows that it needs to send a request to the Tailscale Control servers, that it requires a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
-
-3. The Tailscale Control servers forward the request to the LetsEncrypt servers, which return - after doing the necessary checks - a LetsEncrypt certificate to the Tailscale Control servers.  This is all possible because Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
-
-4. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent which stores the certificate in the */var/lib/tailscale/certs* folder (on Linux), next to the corresponding private key file.
-
-5. The Tailscale agent will automatically ***renew*** these certificates periodically, to make sure you will never end up with a broken https connection (due to an expired LetsEncrypt certificate).  Which is necessary because LetsEncrypt certificates have a validity period of 3 months.
-
-6. As soon as an https connection handshake is started on the specified ports (in this example ports 443 and 9123), the LetsEncrypt certificate will be used automatically by the reverse proxy inside the Tailscale agent.
-
-7. And voila, you have a https connection to your Node-RED system.
-
-## Setup a https connection
-A this point you have LetsEncrypt certificates generated, but they are ***NOT*** being used yet!
-Now it is time to setup a https connection, based on this LetsEncrypt certificate.
-
-In a next tutorial we will setup a Caddy reverse proxy to use the certificate to setup http connections.  But at this moment we are going to keep it simple, and let Node-RED use it to setup http connections.  Note that is not optimal because if a hacker gains access to Node-RED, he will also be able to see your private key!  Keep that in mind if you want to keep doing it that way...
-
-1. Since both files (cert and key) will have owner and group ‘root’, Node-RED cannot read their content (since Node-RED does not run as root user).  So you need e.g. copy both files e.g. to your .node-red folder an adjust the owner an group of the files to the Node-RED user.
-2. Adjust the Node-RED settings.js file to start using this new key pair:
+1. Execute in the CLI the below command to expose the local Node-RED service private within your tailnet only.  That way the devices within your tailnet can access Node-RED, but it is not public available to the outside world:
    ```
-   requireHttps: true,
-   https: function() {
-      return {
-         key: require("fs").readFileSync('/path/to/some/folder/your_machine_name.your_tailnet_name.ts.net.key'),
-         cert: require("fs").readFileSync('/path/to/some/folder/your_machine_name.your_tailnet_name.ts.net.crt')
-      }
-   },
+   tailscale serve --https=9123 --bg --set-path /my_serve http://localhost:1880
    ```
-3. Restart Node-RED to activate the updated https settings.
+   Based on the second parameter, the Tailscale agent knows that the connection requires https.
+2. The agent sends a request to the Tailscale Control servers, that it requires a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
+3. The Tailscale Control servers forward the request to the LetsEncrypt service, which will check if Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
+4. Since that is the case, the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
+5. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
+6. The Tailscale agent will store the certificate in the */var/lib/tailscale/certs* directory (on Linux), next to the corresponding private key file.
+7. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key.
+8. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net), the Tailscale agent will intercept that request.
+9. The DNS resolver of the agent will see that it is a virtual Tailscale hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet.
+10. As soon as a http(s) request arrives on one of the specified https ports (in this example ports 443 or 9123), there will be an SSL handshake between the browser and the Tailscale agent (based on the LetsEncrypt certificate and private key).  The LetsEncrypt certificate will be used by the reverse proxy to setup the https connection.
+11. Finally the request will be forwarded to Node-RED (via plain http).
 
-Now test this setup, by navigating to your flow editor https://your-machine-name.your-tailnet-name.ts.net:1880/http-admin-root-path-if-available.
-If the certifcate has been used, your browser should let you know that the ***connection is secure***.
+Since LetsEncrypt certificates only have a validity period of 3 months, the Tailscale agent will automatically ***renew*** these certificates periodically.
+
+## SSL termination
+Note that there is a https connection between the browser and the Tailscale agent on the Raspberry.  In the agent SSL termination happens, which means that the connection between the agent and Node-RED is plain http!  It would be quite useles to setup a second https connection between the Tailscale agent (on the Raspberry) and Node-RED, because all the data traffic stays inside your Raspberry.  Moreover if you have setup in the past https in Node-RED using a self-signed certificate, the Tailscale agent might even refuse to connect to Node-RED, because it doesn't trust that certificate.
+
+So if you have setup https in Node-RED in the past, you need to remove that config again from your settings.js file (and restart Node-RED):
+```
+   requireHttps: false,
+   //https: function() {
+   //   return {
+   //      key: require("fs").readFileSync('/path/to/some/folder/your_machine_name.your_tailnet_name.ts.net.key'),
+   //      cert: require("fs").readFileSync('/path/to/some/folder/your_machine_name.your_tailnet_name.ts.net.crt')
+   //   }
+   //},
+```
