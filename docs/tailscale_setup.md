@@ -57,6 +57,20 @@ Now that you hace added some devices to your tailnet, you can have a first look 
 
    You can change this name, but you are limited to select a name from a list of automatically generated tailnet names.
 
+## Approve devices
+So when a device is registered, it will join your tailnet automatically.  You can secure your tailnet even morey, by requiring every new device to be approved manually:
+
+1. Login to the admin console
+2. Activate once (in the *"Settings"* tabsheet) the manual device approval procedure:
+
+   ![image](https://github.com/user-attachments/assets/1ea50a95-b406-4c16-a4ce-0755cb74dd1f)
+
+3. Once a new device has requested to join your tailnet, you will see that in the *"Machines"* tabsheet:
+
+   ![image](https://github.com/user-attachments/assets/90b64190-95a3-46c8-b230-4ff74ef3e31b)
+
+4. Click on the `...` button for the new device, and click on the *"Approve"* menu item.
+
 ## Access a virtual device
 A first test is to check whether you can access (on your smartphone browser) your Node-RED dashboard:
 
