@@ -17,7 +17,7 @@ This setup is very easy and works fine: you can access your Node-RED web applica
 
 However as soon as a port has been opened on your modem/router, malicious bots will start scanning these ports within minutes.  Once an open port has been detected by these bots, hackers will know about it and have direct access to your Node-RED logon screen.
 
-You will find on the Node-RED Discourse community some best practices to make your port forwarding setup a bit more secure:
+You will find on the Node-RED Discourse community some ***best practices*** to make your port forwarding setup a bit more secure:
 +	Always make sure you have at least activated basic authentication, i.e. a logon screen where you have to enter username and password.
 +	Use a difficult to guess username and password, instead of well-known usernames like 'pi' or 'admin'.  That way hackers not only have to guess the password, but they also have to guess the username.
 +	Use a different port instead of 1880, especially a not well-know port.  That way hackers that are focussed on Node-RED systems (and thus scanning for port 1880), won’t find your open port that easily.
@@ -26,11 +26,9 @@ You will find on the Node-RED Discourse community some best practices to make yo
 +	Use client certificates to authenticate your own devices in Node-RED.
 + And so on…
 
-This are all very good guidelines, which we will be discussed in more detail later on!  
-
-However those guidelines won’t solve all our problems, because the hackers have direct access to your Node-RED login screen:
+This are all very good guidelines, however they won’t solve all our problems.  Because hackers have direct access - via port forwarding - to your Node-RED login screen:
 +	Hackers use brute force algorithms to guess your password, by trying a massive amount of different passwords.
-+	Hackers can determine (a.o. based on the source of your logon screen) which NodeJs and ExpressJs webserver versions you are running, and look for security vulnerability issues within that version.  That allows them to exploit these issues to gain access to your system.
++	Hackers can determine (a.o. based on the source of your logon screen) which NodeJs and ExpressJs webserver versions you are running, and look for security vulnerability issues within that version.  That allows them to exploit these vulnerabilities to gain access to your system.
 +	Hackers can start a DDOS attack (Denial of service) by sending a massive amount of http requests from a large farm of hacked machines to your Raspberry.  That way you will not be able to access your Node-RED anymore, and Node-RED can even crash.
 +	…
 
