@@ -3,9 +3,9 @@ When you have added devices to your tailnet, each device will get a virtual IP a
 
 However it is adviced to activate DNS, because adressing devices using host names has some advantages:
 + Host names are easier to remember compared to IP addresses.
-+ It is not possible to setup secure https, because LetsEncrypt certificates cannot be requested for IP addresses (as common name).
++ It is not possible to setup secure https without hostnames, because LetsEncrypt certificates cannot be requested for IP addresses (as common name).
 
-Fortunately the Tailscale Control servers offer a Magic DNS service.  Such a DNS (Domain Name System) can map host names to IP addresses, which allows us to use virtual host names in our tailnet (which will be resolved automatically to ip addresses behind the scenes).
+Fortunately the Tailscale Control servers offer a Magic DNS (Domain Name System) service.  Such a DNS can map (virtual) host names to (virtual) IP addresses, which allows us to use virtual host names in our tailnet (which will be resolved automatically to virtual ip addresses behind the scenes).
 
 ## Activating DNS
 Activating hostnames for agents in our tailnet is rather simple:
@@ -13,9 +13,9 @@ Activating hostnames for agents in our tailnet is rather simple:
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/153777f7-5822-4782-9ba6-8298828800ab" width="800">
 
-   Note that all devices get a default virtual hostname, which is a unique name generated from the device's OS hostname.
+   Note that all devices also get a default virtual hostname, which is a unique name generated from the device's OS hostname.
  
-2. Via the “…” button you can (via menu *“Edit Machine Name”*) rename the hostname by a meaningful name.
+2. Via the `...` button you can (via menu *“Edit Machine Name”*) rename the default virtual hostname by a meaningful name.
 
 3. Enable MagicDNS once (in the DNS tabsheet), to activate those virtual machine names as DNS names in your tailnet:
 
