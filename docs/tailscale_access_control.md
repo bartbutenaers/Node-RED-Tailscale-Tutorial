@@ -4,12 +4,12 @@ Via ACL (Access Control Lists) you can specify which resources can be accessed w
 
 Let's stick to a simple example.  You have 1 server (i.e. your Raspberry running Node-RED) and multiple clients (i.e. Android smartphones, Windows 10 portable, ...).  You want the clients to be able to access the server, but the clients should not be able to access each other.  Because you want to minimize risks within your tailnet, in case one the device would be infected (before you could remove it from your tailnet).
 
-1. Login to the admin console.
+1. Login to the admin console (https://login.tailscale.com/login).
 2. Create 2 custom tags for servers and clients:
 
    ![image](https://github.com/user-attachments/assets/35d1a210-f60c-4c6f-9545-19757fa1d347)
 
-3. In the *"Machines"* tabsheet, click on the `...` button of a device.  And choose this menu item:
+3. In the *"Machines"* tabsheet, click on the `...` button of a device.  And choose the following menu item:
 
    ![image](https://github.com/user-attachments/assets/bf40c434-0500-4afa-b985-35ee7e896e1e)
 
@@ -23,7 +23,7 @@ Let's stick to a simple example.  You have 1 server (i.e. your Raspberry running
 
 6. Now create an ACL list to specify that clients should only be able to access servers:
 
-   ![image](https://github.com/user-attachments/assets/2fce6a51-7301-446b-8b55-addddbe841a4)
+   ![image](https://github.com/user-attachments/assets/a468b3af-4add-48a3-b747-c74c85c7a87a)
 
-7. The Tailnet control servers will distribute these ACL lists to all the Tailscale agents in your tailnet.  When 2 Tailscale agents communicate with each other, they will ***both*** check whether he is allowed to talk to the other agent.
-8. You will now see for example in your Android Tailscale app, that only the devices are visible to which your Android device has access.
+7. The Tailnet control servers will distribute these ACL lists to all the Tailscale agents in your tailnet.  When 2 Tailscale agents communicate with each other, they will ***both*** use those ACL lists to check whether he is allowed to talk to the other agent.
+8. From now on you will see for example in your Android Tailscale app, only the virtual hostnames of the devices you can access.
