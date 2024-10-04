@@ -47,7 +47,7 @@ https://<your_virtual_host_name>.<your_tailnet_name>.ts.net:1800 (tailnet only)
 https://<your_virtual_host_name>.<your_tailnet_name>.ts.net (Funnel on)
 |-- / proxy http://localhost:3001
 ```
-As you can see, the output does also show the local services which are available within your *tailnet only*.  Which are the local services published previously via the command `tailscale serve ...`.  So in fact the `status` shows the entire configuration of the Tailscale agent's reverse proxy.
+As you can see, the output does also show the local services which are available within your *tailnet only*.  Which are the local services published previously via the command `tailscale serve ...`.  So in fact the `status` shows the entire configuration of the Tailscale agent's reverse proxy.  Which is a bit confusing because `tailscale serve status` also shows both the local and public services.
 
 ## Troubleshooting
 Some tips to help you troubleshooting a funnel that is not working as expected:
