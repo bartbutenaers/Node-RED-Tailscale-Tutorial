@@ -2,20 +2,26 @@
 
 The easiest way to access your Node-RED system via internet, is by setting up port forwarding.  But that is a really ***bad idea***, which we will try to explain below.
 
-By default all the ports on your modem/router will be closed to make sure nobody can access devices on your home network from the internet.  As a result, you also won't be able yourself to access Node-RED from the internet.  
+## Access Node-RED via the LAN
 
-To explain how port-forwarding can give you access to Node-RED from the internet, we will explain how you can access Node-RED.  The Node-RED ExpressJs webserver is listening on one of more ports for incoming requests:
+To explain how port-forwarding can give you access to Node-RED from the internet, we will explain how you can access Node-RED from within you own home network (LAN).  Which is quite easy, because the Node-RED ExpressJs webserver is simply listening on one of more ports for incoming requests:
 + Node-RED listens by default on port 1880 a.o. for incoming requests about the flow editor and dashboard.
 + The node-red-contrib-google-smarthome node listens to port 3001 for incoming voice commands from the Google servers.
 + And so on...
 
-You can access directly these ports from within you local home network.  However to allow access from the internet on these ports, you need to open ports on your modem/router and forward the requests to these ports on the host device (e.g. Raspberry Pi) where Node-RED is running:
+## Access Node-RED via the WAN
+
+By default all the ports on your modem/router will be closed to make sure nobody can access devices on your home network from the internet.  As a result, you also won't be able yourself to access Node-RED from the internet.  
+
+In order to be able to access those ports also from the internet (WAN), you need to open ports on your modem/router and forward the requests to these ports on the host device (e.g. Raspberry Pi) where Node-RED is running.  That is called port forwarding:
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/2e85f777-7fed-4fd0-aa63-e5124d04993a)
 
 This setup is very easy and works fine: you can access your Node-RED web application with your browser, and you can send voice commands to Node-RED with your Google Home device.
 
-However as soon as a port has been opened on your modem/router, malicious bots will start scanning these ports within minutes.  Once an open port has been detected by these bots, hackers will know about it and have direct access to your Node-RED logon screen.
+## Riscs of port forwarding
+
+As soon as a port has been opened on your modem/router, malicious bots will start scanning these ports within minutes.  Once an open port has been detected by these bots, hackers will know about it and have direct access to your Node-RED logon screen.
 
 You will find on the Node-RED Discourse community some ***best practices*** to make your port forwarding setup a bit more secure:
 +	Always make sure you have at least activated basic authentication, i.e. a logon screen where you have to enter username and password.
