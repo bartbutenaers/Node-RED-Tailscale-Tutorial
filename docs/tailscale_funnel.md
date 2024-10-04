@@ -30,6 +30,25 @@ Such a funnel can be setup like this:
  
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
 
+## Show funnel status
+
+Afterwards it is always possible to get the current status of your funnel(s).  Use the following command on Linux:
+```
+tailscale funnel status
+```
+The output of the command will not only show the current active funnels:
+```
+# Funnel on:
+#     - https://<your_virtual_host_name>.<your_tailnet_name>.ts.net
+
+https://<your_virtual_host_name>.<your_tailnet_name>.ts.net:1800 (tailnet only)
+|-- / proxy http://localhost:1880
+
+https://<your_virtual_host_name>.<your_tailnet_name>.ts.net (Funnel on)
+|-- / proxy http://localhost:3001
+```
+As you can see, the output does also show the local services which are available within your *tailnet only*.  Which are the local services published previously via the command `tailscale serve ...`.  So in fact the `status` shows the entire configuration of the Tailscale agent's reverse proxy.
+
 ## Troubleshooting
 Some tips to help you troubleshooting a funnel that is not working as expected:
 + Look in the receiver logs.  In this case the Node-RED logs where node-red-contrib-google-smarthome might have logged something.
