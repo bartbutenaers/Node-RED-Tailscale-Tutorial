@@ -6,7 +6,7 @@ During the SSL/TLS handshake between a client and a server, the server will shar
 
 The client needs to make sure that the public key is being send by the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept the client's https request to the server, and return his own fake public key of his own serve.  In that case the client would setup - without knowing - a secure https connection to the hacker's server.  And then the hacker can decrypt and read all the condifidential data send by the client (via its private key):
 
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/23459b16-e9f8-4f46-979e-4932beb5240e)
+![image](https://github.com/user-attachments/assets/9e5f3009-70a0-4c6d-8f93-33af29867d81)
 
 The hacker will forward all the https requests to the real server.  That way the client thinks he is directly connected to Node-RED, however there is a ***man in the middle*** intercepting all the data.
 
