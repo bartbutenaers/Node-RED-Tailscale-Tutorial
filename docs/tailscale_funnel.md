@@ -6,9 +6,9 @@ However such a private service can be made public accessible via the internet, b
 
 ![image](https://github.com/user-attachments/assets/91d51c8d-568b-4d24-9bc6-dca9f65e062d)
 
-***CAUTION!!!*** 
-+ Make sure you have a https connection, based on LetsEncrypt certificates (via Tailscale)!  Because once your data leaves the encrypted funnel via the public endpoint, your data will be transported over the internet where hackers can intercept and read it.  You can achieve that by the `--https=443` parameter in the command below.
-+ Make sure that your local service access is secured (minimal with username/password), before you make it public available through a tunnel!  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
+***CAUTION:*** 
++ Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Because once your data leaves the encrypted funnel via the public endpoint, your data will be transported over the internet where hackers can intercept and read it.  You can achieve that by the `--https=443` parameter in the command below.
++ Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
 
 ## Setup a funnel
 Such a funnel can be setup like this:
