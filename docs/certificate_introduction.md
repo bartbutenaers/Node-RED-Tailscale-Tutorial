@@ -42,3 +42,7 @@ A hacker could of course sign his own certificate (pretending to be some kind of
 + Is the validity period of the certificate not passed yet.
 + Does the common name in the certificate match with the hostname in the url, i.e. the hostname to which we have send this request.
 + Has the certificate being signed by one of a list of trusted CA's (GlobalSign, Verisign, LetsEncrypt, ...).
+
+For example browsers will inform you that the certificate is not valid, in this case because the common name in the certificate does not match with the hostname you have entered in the address bar (i.e. inside the url):
+
+![image](https://github.com/user-attachments/assets/a15a8016-ebb7-4715-a3b8-e71b304fd489)
