@@ -4,11 +4,14 @@ I created this repository to share my insights on setting up security for a Node
 
 After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why ***port-forwarding should be avoided!***
 
-The complete documentation of Tailscale can be found [here](https://tailscale.com/kb/1017/install).
+This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend to have a look at the Tailscale documentation (see [here](https://tailscale.com/kb/1017/install)) for more details.
 
 Please read the ***disclaimer*** at the bottom of this readme page, before you get started!  
 
-And feel free to create issues or pull-requests, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  But when you have a Tailscale issue outside the scope of this tutorial, post it directly in the Tailscale [repo](https://github.com/tailscale/tailscale/issues) because I am no Tailscale expert...
+## Issues and pull requests
+***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  
+
+***Issues*** can be used e.g. to mention if a part of the documentation is not correct or incomplete.  But when you have a Tailscale issue with your setup, post it directly in the Tailscale [repo](https://github.com/tailscale/tailscale/issues) or create a discussion in the Node-RED Discourse forum (where you can mention me to get my attention.  But ***DON'T***  post such issues in this repo, because I don't have the time to troubleshoot individual use cases!!!
 
 ## The big bad internet
 Obviously when you would use Node-RED only offline, you could minimize the risk of malicious users accessing your system.  However there are a number of nice use cases, that will only work by connecting Node-RED to the internet:
