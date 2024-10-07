@@ -19,7 +19,7 @@ If you have setup https in Node-RED in the past, you need to remove that config 
 ## Access a local service
 On our virtual devices there might be one or more local services be running, and listening to ports.  For example the Node-RED service is listening by default to port 1880.  Be aware that by default ***ALL*** local services are accessible via your tailnet!  If you don't want that, you can find information afterwards how you can limit which ports are accesible via your tailnet (see section about Access Control).
 
-![image](https://github.com/user-attachments/assets/ccdfb8ec-c247-4b4a-856e-7bd857db3076)
+![image](https://github.com/user-attachments/assets/32f61be9-21eb-4e54-b1ce-c4b1b3b345ed)
 
 1. Enter the virtual IP address of your Raspberry Pi in the browser on your smartphone, and navigate to port 1880 (and subpath 'dashboard'):
 
