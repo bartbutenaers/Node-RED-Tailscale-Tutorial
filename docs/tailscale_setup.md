@@ -34,7 +34,7 @@ Tailscale agents can be installed on various platforms.  Since a tailnet needs m
 
 2.	Install a second Tailscale agent for example on a ***Windows 10 portable*** (see instructions [here](https://tailscale.com/download/windows)) and again authorized it via your identity provider.
 
-3.	And at last install a third Tailscale agent on your Raspberry Pi running Node-RED (see ‘manual’ instructions [here](https://tailscale.com/download/linux/rpi) or specific for the Bookworm version [here](https://pkgs.tailscale.com/stable/#raspbian-bookworm)).
+3.	And at last install a third Tailscale agent on your Raspberry Pi running Node-RED (see ‘manual’ instructions [here](https://tailscale.com/download/linux/rpi) or specific for the Bookworm version [here](https://pkgs.tailscale.com/stable/#raspbian-bookworm)).  This agent will run as a systemd daemon named *"tailescaled"*.
   
     Remark: after you executed the command `sudo tailscale up`, an authorization url will be displayed in the console.  Paste that url in a browser on any device, and once it is authenticated in your tailnet, the text 'Success' will appear in your command line:
 
@@ -70,18 +70,4 @@ When a device is registered, it will join your tailnet automatically.  But you c
    ![image](https://github.com/user-attachments/assets/90b64190-95a3-46c8-b230-4ff74ef3e31b)
 
 4. Click on the `...` button for the new device, and click on the *"Approve"* menu item.
-
-## Access a virtual device
-Test whether you can access (on your smartphone browser) your Node-RED dashboard via https:
-
-1. Enter the virtual IP address of your Raspberry Pi in the browser on your smartphone:
-
-   `http://your-device-virtual-ip-address:1880/dashboard`
-
-2. If everything went well, the Node-RED dashboard should appear:
-
-   ![image](https://github.com/user-attachments/assets/df585c26-46a8-421a-a2b7-183733f560fd)
-
-3. Have now a look at your LetsEncrypt certificate, to check whether it is from LetsEncrypt.  For example in Chrome:
-
-   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e9772288-9ddd-4168-9635-fa816ed9cdbd)
+5. Now the new device will join your tailnet.
