@@ -41,6 +41,19 @@ Remarks:
 + It is absolutely required to specify a port number, otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
 + Currently requests can only be forwarded to localhost, not to other hostnames.
 
+## Check the certificate
+Once the reverse proxy has been setup to use https, we can have a look at the certificate that is being used.
+
+1. Navigate to Node-RED in the browser:
+   ```
+   https://your-machine-name.your-tailnet-name.ts.net:9123/dashboard
+   ```
+   Note that at port 1880 Node-RED is still accessible via http (as explained before in the 'plain http' section).
+2. As soon as the browser shows in the address bar that the connection is safe, that already means that a valid LetsEncrypt certificate is being used.
+3. Depending on the browser, there will be a menu option available to show the certificate being used.  Via that way you should be able to see the LetsEncrypt certificate for your virtual hostname.  For example in Chrome:
+
+   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e9772288-9ddd-4168-9635-fa816ed9cdbd)
+
 ## Behind the scenes
 This section explains in detail what happens behind the scenes if a local service is being served:
 
