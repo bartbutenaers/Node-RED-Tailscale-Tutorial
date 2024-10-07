@@ -30,28 +30,33 @@ A much better solution is to start using certificates for your domain/hostname, 
 
 To generate a LetsEncrypt certificate on our Raspberry Pi (where Node-RED is running), you might tell the Tailscale agent to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However we will ***NOT*** do it like that.  Because it is even more easier to just tell the agent that you need a https connection on a specified port, and then the agent will automatically take care of everything:
 
+Execute the following command to serve the local Node-RED service ***within your tailnet only*** via https:
+```
+tailscale serve --https=9123 --bg --set-path /my_serve http://localhost:1880
+```
+That way you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 9123 via a https server, and forward these as http requests to port 1880 on localhost.
+
+Remarks:
++ The port 9123 is random unused port that I have choosen.
++ It is absolutely required to specify a port number, otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
++ Currently requests can only be forwarded to localhost, not to other hostnames.
+
+## Behind the scenes
+This section explains in detail what happens behind the scenes if a local service is being served:
+
 ![image](https://github.com/user-attachments/assets/bdad301b-bb0a-488a-8e7f-7c85af0ddb4b)
 
-1. Execute the following command to serve the local Node-RED service ***within your tailnet only*** via https:
-   ```
-   tailscale serve --https=9123 --bg --set-path /my_serve http://localhost:1880
-   ```
-   That way you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 9123 via a https server, and forward these as http requests to port 1880 on localhost.
-
-   Remarks:
-   + The port 9123 is random unused port that I have choosen.
-   + It is absolutely required to specify a port number, otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
-   + Currently requests can only be forwarded to localhost, not to other hostnames.
-3. The agent sends a request to the Tailscale Control servers, to mention that it requires a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
-4. The Tailscale Control servers forward the request to the LetsEncrypt service, which will check if Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
-5. Since that is the case, the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
-6. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
-7. The Tailscale agent will store the certificate in the */var/lib/tailscale/certs* directory (on Linux), next to the corresponding private key file.
-8. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key.
-9. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net), the Tailscale agent will intercept that request.
-10. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet.
-11. As soon as a http(s) request arrives on one of the specified https ports (in this example ports 443 or 9123), there will be an SSL handshake between the browser and the Tailscale agent (based on the LetsEncrypt certificate and private key).  The LetsEncrypt certificate will be used by the reverse proxy to setup the https connection.
-12. Finally the request will be forwarded to Node-RED (via plain http).
+1. Execute the `tailscale serve ...` command.
+2. The agent sends a request to the Tailscale Control servers, to mention that it requires a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
+3. The Tailscale Control servers forward the request to the LetsEncrypt service, which will check if Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
+4. Since that is the case, the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
+5. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
+6. The Tailscale agent will store the certificate in the */var/lib/tailscale/certs* directory (on Linux), next to the corresponding private key file.
+7. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key.
+8. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net), the Tailscale agent will intercept that request.
+9. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet.
+10. As soon as a http(s) request arrives on one of the specified https ports (in this example ports 443 or 9123), there will be an SSL handshake between the browser and the Tailscale agent (based on the LetsEncrypt certificate and private key).  The LetsEncrypt certificate will be used by the reverse proxy to setup the https connection.
+11. Finally the request will be forwarded to Node-RED (via plain http).
 
 Since LetsEncrypt certificates only have a validity period of 3 months, the Tailscale agent will automatically ***renew*** these certificates periodically.  You can check that by looking at the date of the .crt file in the */var/lib/tailscale/certs* directory.
 
