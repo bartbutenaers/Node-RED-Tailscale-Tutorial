@@ -1,4 +1,6 @@
 # Use https in your tailnet
+Previously we have deactivated https in Node-RED.  Now we are going to activate it again, but we will now use the reverse proxy in the Tailscale agent to accomplish that.  Because it is much safer to handle all the security stuff in a reverse proxy ***between*** Node-RED and the internet.  Because when the security would be handled ***inside*** Node-RED, hackers can abuse the power of Node-RED to disable its own security.
+
 The data between the Tailscale agents in your tailnet is already encrypted, using the Wireguard protocol.  As a result all you data will be send in a secure way between your virtual devices in your tailnet, across the internet.  Which means it is already safe enough to get started, without any need to activate https!  In other words you can use ***plain http*** to access Node-RED, since all data is exchanged within your secure tailnet.
 
 However it is still very useful to activate https, because the data is only encrypted ***between*** the Tailscale agents.  Data that you send into a Tailscale agent will be encrypted by that agent, and the data will be decrypted by the agent that receives that encrypted data.  As a result if you send unencrypted data into your tailnet, it will leave your tailnet unencrypted.  What goes in will come out..
