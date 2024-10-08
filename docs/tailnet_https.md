@@ -57,19 +57,24 @@ Once the reverse proxy has been setup to use https, we can have a look at the ce
 ## Behind the scenes
 This section explains in detail what happens behind the scenes if a local service is being served:
 
-![image](https://github.com/user-attachments/assets/bdad301b-bb0a-488a-8e7f-7c85af0ddb4b)
+![image](https://github.com/user-attachments/assets/b712d880-563d-4dbe-a921-f1cef4752df6)
 
-1. Execute the `tailscale serve ...` command.
-2. The agent sends a request to the Tailscale Control servers, to mention that it requires a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
+1. Execute the `tailscale serve ...` command, to configure the reverse proxy inside the Tailscale agent.
+2. The agent sends a request to the Tailscale Control servers, to get a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
 3. The Tailscale Control servers forward the request to the LetsEncrypt service, which will check if Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
-4. Since that is the case, the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
+   Remark: The Tailscale control servers will create a *.ts.net DNS TXT record for your subdomain, to complete their DNS-01 challenges for LetsEncrypt. 
+4. Since that is the case (because tailscale owns all the subdomains of *.ts.net), the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
 5. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
 6. The Tailscale agent will store the certificate in the */var/lib/tailscale/certs* directory (on Linux), next to the corresponding private key file.
-7. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key.
-8. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net), the Tailscale agent will intercept that request.
-9. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet.
-10. As soon as a http(s) request arrives on one of the specified https ports (in this example ports 443 or 9123), there will be an SSL handshake between the browser and the Tailscale agent (based on the LetsEncrypt certificate and private key).  The LetsEncrypt certificate will be used by the reverse proxy to setup the https connection.
-11. Finally the request will be forwarded to Node-RED (via plain http).
+7. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key, which it can use to setup SSL connections when a https request arrives.
+8. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net:9123/dashboard), the Tailscale agent on your smartphone will intercept that request.
+9. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet. 
+10. The Tailscale agent listens to requests arriving via the Wireguard mesh network on port 4161 by default.  The agent will forward the https request to the port specified inside the request, in this case port 9123.
+11. The reverse proxy will now execute 3 tasks:
+     + Setup a https connection with the smartphone, based on the LetsEncrypt certificate.
+     + Do SSL termination (i.e. convert the https requests to http requests) because we have specified in our serve command that the target is http.
+     + Forward the http request to port 1880.  
+12. Finally the plain http request will be forwarded to Node-RED, which will show the dashboard.
 
 Since LetsEncrypt certificates only have a validity period of 3 months, the Tailscale agent will automatically ***renew*** these certificates periodically.  You can check that by looking at the date of the .crt file in the */var/lib/tailscale/certs* directory.
 
