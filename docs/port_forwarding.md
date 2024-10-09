@@ -1,4 +1,4 @@
-# Avoid port forwarding
+# Port forwarding
 
 The easiest way to access your Node-RED system via internet, is by setting up port forwarding.  But that is a really ***bad idea***, which we will try to explain below.
 
@@ -39,3 +39,11 @@ This are all very good guidelines, however they won’t solve all our problems. 
 +	…
 
 Since a lot of Node-RED users (using port forwarding) have been hacked already, it is adviced to avoid using port forwarding!  As a result, ALL ports should be closed on your modem/router!  
+
+## Tailscale doesn't need port forwarding
+
+The Tailscale agents manage to communicate with each other, even when all ports on your modem/router firewall are closed.  Which can be achieved using a technique called UDP punch holing:
+
+![image](https://github.com/user-attachments/assets/ee0e4ae2-1c9a-44f3-b591-259f1bd2e843)
+
+That way your tailnet can reach from the WAN to your LAN.  It doesn't matter where your devices (running a Tailscale agent) are located, they will stay interconnect by your tailnet.
