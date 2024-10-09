@@ -2,7 +2,7 @@
 
 I created this repository to share my insights on setting up security for a Node-RED system.  This repository contains articles about setting up Tailscale to secure access to Node-RED.  
 
-After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why ***port-forwarding should be avoided!***
+After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  Summary: ***port-forwarding should be avoided!***
 
 This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend to have a look at the Tailscale documentation (see [here](https://tailscale.com/kb/1017/install)) for more details.
 
@@ -57,9 +57,9 @@ Although these services are very decent and popular choices, they simply didn't 
 Fortunately Tailscale is a service that offers all the security features that I need.  And it is 'quite' understandable.  That is the reason why I preferred using Tailscale, instead of the other available services.
 
 ## Introduction to Tailscale
-Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, as long as those devices have a Tailscale ***agent*** installed.  In contradiction to a normal VPN, Tailscale offers a ***peer-to-peer mesh network (called tailnet)***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Such direct connections between your devices offer multiple advantages:
+Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, as long as you have a Tailscale ***agent*** installed on all those devices.  In contradiction to a normal VPN, Tailscale offers a ***peer-to-peer mesh network*** which is called ***tailnet***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Such direct connections between your devices offer multiple advantages:
 + The data can be exchanged very fast via such connections.
-+ There are no traffic volume limitations, which is useful when transferring lots of data (e.g. video footage from IP cameras).
++ There are no traffic volume limitations, which is useful when transferring lots of data (e.g. video footage from IP cameras).  Only for public funnels, there is a traffic limitation.
 + The tailnet will continue working, even when the Tailscale servers would become temporarily unaccessible.  Except if you use their relay service.
 
 When you want to access your Node-RED dashboard (running on a Raspberry Pi) from your smartphone, you need to install a Tailscale agent both on your Raspberry Pi and your smartphone.  Once you have added both devices (i.e. Tailscale agents) in your Tailscale account, they become part of your own ***tailnet***.  As a result both devices can communicate directly to each other via their Tailscale agents.  This means you can navigate with your smartphone browser to the (virtual!) hostname of your Raspberry Pi, to see your Node-RED dashboard:
@@ -69,6 +69,8 @@ When you want to access your Node-RED dashboard (running on a Raspberry Pi) from
 Note that this way there is no need to implement access control (e.g. IP address whitelisting) anymore inside Node-RED, to limit the client devices that can access Node-RED.  Since only your own devices (from your tailnet) can access Node-RED remotely, you can even simplify your setup even more:
 + Remove the logon screen from your Node-RED dashboard, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the familly.
 + Keep the logon screen for the flow editor, because it is still better to secure your flows with an extra protection.  Moreover probably not everybody in your familly will use the flow editor, and you won't use it as often as your dashboard.
+
+You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
 
 ## Tailscale for Node-RED
 This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
