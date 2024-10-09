@@ -27,7 +27,8 @@ On our virtual devices there might be one or more local services be running, and
 
    Note that afterwards we will show how to setup DNS in tailscale, so you can navigate to a hostname (instead of an IP address).
 2. The http request will be intercepted by the Tailscale agent ***DNS resolver***, which will detect that it is a Tailscale virtual ip address (or hostname).
-3. The http request will be send via the tailnet to the tailscale on the Raspberry Pi.
+   Note that the devices in your tailnet use their local DNS settings and only use the tailnet's DNS servers when needed.  For example when a virtual Tailscale IP address or hostname is being pinged, that request will be forwarded to your tailnet.
+3. The http request will be send via the tailnet (i.e. via an encrypted wireguard channel) to the tailscale on the Raspberry Pi.
 4. The Tailscale agent will listen to port 41641 by default for all requests arriving from the Wireguard mesh network.  Since the http requests contains target port 1880, the ***reverse proxy*** will forward the request to that port.
 5. The http request will be sent to Node-RED, which will return a http response.
 6. After the http response has travelled the entire traject, the Node-RED dashboard should appear in the browser:
