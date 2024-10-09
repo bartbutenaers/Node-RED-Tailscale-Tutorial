@@ -47,3 +47,5 @@ The Tailscale agents manage to communicate with each other, even when all ports 
 ![image](https://github.com/user-attachments/assets/ee0e4ae2-1c9a-44f3-b591-259f1bd2e843)
 
 That way your tailnet can reach from the WAN to your LAN.  It doesn't matter where your devices (running a Tailscale agent) are located, they will stay interconnect by your tailnet.
+
+If you are interested in the technical details about those NAT traversal techniques, you can read [this](https://tailscale.com/blog/how-nat-traversal-works) article.
