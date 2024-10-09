@@ -49,7 +49,7 @@ Now that you hace added some devices to your tailnet, you can have a first look 
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/228aa24a-94c3-41c1-9e46-d5b82de2837d" width="800">
 
-   Every device has been assigned a virtual hostname and a fixed virtual ip address 100.x.y.z
+   Every device in the tailnet gets a fixed virtual IP address 100.x.y.z and a virtual hostname, both of which are only known within your tailnet. 
 
 4. In the *"DNS"* tabsheet you can also find the name of your tailnet:
 
