@@ -44,6 +44,7 @@ Remarks:
 + Currently requests can only be forwarded to localhost, not to other hostnames.
 + Via `tailscale serve reset` it is possible to remove all serve's from the reverse proxy.
 + Via `tailscale serve status` you can get a list of all serve's that have been setup, but it will also show all funnels (which will be discussed later on).
++ Via the above command we serve a local service (i.e. webserver), however it is also possible to serve files and static texts on your tailnet easily.  This is possible via respectively a file server and a static text server, which are available within the Tailscale agent (see Tailscale [documentation](https://tailscale.com/kb/1242/tailscale-serve)). 
 
 ## Check the certificate
 Once the reverse proxy has been setup to use https, we can have a look at the certificate that is being used.
