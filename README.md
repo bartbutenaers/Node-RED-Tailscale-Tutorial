@@ -80,7 +80,7 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 3. Setup your own ***tailnet***, by creating a Tailscale account and install some agents on your devices (which are added to your tailnet): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_setup.md).
 4. Specify a (virtual) logical hostname for each device within your tailnet (for easy access), i.e. setup DNS in your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_dns.md).
 5. To try out communication within our tailnet, we will start with plain http: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/edit/main/docs/tailnet_plain_http.md).
-6. Make sure all traffic to Node-RED to become ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_https.md).
+6. Serve the Node-RED service via ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_serve_https.md).
 7. Setup a public tunnel (called ***funnel***) to allow third-party services can access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 8. Finally specify which devices are allowed to communicate with each other, within your tailnet, using ACL's: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_access_control.md).
 
