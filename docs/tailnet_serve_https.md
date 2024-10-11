@@ -32,7 +32,7 @@ A much better solution is to start using certificates for your domain/hostname, 
 
 To generate a LetsEncrypt certificate on our Raspberry Pi (where Node-RED is running), you might tell the Tailscale agent to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However we will ***NOT*** do it like that.  Because it is even more easier to just tell the agent that you need a https connection on a specified port, and then the agent will automatically take care of everything:
 
-Execute the following command to serve the local Node-RED service ***within your tailnet only*** via https:
+Execute the following command to ***'serve'*** the local Node-RED service ***within your tailnet only*** via https:
 ```
 tailscale serve --https=9123 --bg --set-path /my_serve http://localhost:1880
 ```
@@ -40,8 +40,10 @@ That way you tell the reverse proxy (of the Tailscale agent on the Raspberry) to
 
 Remarks:
 + The port 9123 is random unused port that I have choosen.
-+ It is absolutely required to specify a port number, otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
++ It is absolutely required to specify a port number, otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).  You can specify whatever port number, but it should be one not used already.
 + Currently requests can only be forwarded to localhost, not to other hostnames.
++ Via `tailscale serve reset` it is possible to remove all serve's from the reverse proxy.
++ Via `tailscale serve status` you can get a list of all serve's that have been setup, but it will also show all funnels (which will be discussed later on).
 
 ## Check the certificate
 Once the reverse proxy has been setup to use https, we can have a look at the certificate that is being used.
