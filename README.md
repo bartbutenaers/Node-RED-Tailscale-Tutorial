@@ -66,11 +66,25 @@ When you want to access your Node-RED dashboard (running on a Raspberry Pi) from
 
 ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
 
-Note that this way there is no need to implement access control (e.g. IP address whitelisting) anymore inside Node-RED, to limit the client devices that can access Node-RED.  Since only your own devices (from your tailnet) can access Node-RED remotely, you can even simplify your setup even more:
-+ Remove the logon screen from your Node-RED dashboard, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the familly.
-+ Keep the logon screen for the flow editor, because it is still better to secure your flows with an extra protection.  Moreover probably not everybody in your familly will use the flow editor, and you won't use it as often as your dashboard.
-
 You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
+
+## Access control within Node-RED
+When using e.g. port forwarding it is very useful to implement access control (e.g. IP address whitelisting) inside Node-RED, to limit which client devices are allowed to access Node-RED. However when the access to Node-RED will become restricted to the devices within your tailnet, there is *'less'* need to implement access control inside Node-RED yourself.  Of course some extra security will never be bad...
+
+Since Node-RED can only be accessed from your tailnet devices, you could consider to simplify your setup:
++ Remove the logon screen from your Node-RED dashboard, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the family.  This can be achieved by commenting following lines in your Node-RED settings.js file:
+   ```
+   //httpNodeAuth: {user:"xxx",pass:"yyy"},
+   //httpStaticAuth: {user:"xxx",pass:"yyy"},
+   ```
+   ***TODO: THIS ADVICE SHOULD BE REVIEWED IF IT HAS BAD SIDE EFFECTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***
++ Keep the logon screen for the flow editor, to protect your flows with an extra protection.  Moreover probably not everybody in your familly will use the flow editor, and you won't use it as often as your dashboard.  Again can be done in the settings.js file:
+   ```
+   adminAuth: {
+      "type": "credentials",
+      "users": [ { "username": "zzz", "password": "xyz", "permissions": "*" } ]
+    },
+   ```
 
 ## Tailscale for Node-RED
 This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
