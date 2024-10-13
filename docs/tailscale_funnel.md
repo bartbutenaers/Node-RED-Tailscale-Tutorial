@@ -7,26 +7,36 @@ However such a private service can be made public accessible via the internet, b
 ![image](https://github.com/user-attachments/assets/91d51c8d-568b-4d24-9bc6-dca9f65e062d)
 
 ***CAUTION:*** 
-+ Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Because once your data leaves the encrypted funnel via the public endpoint, your data will be transported over the internet where hackers can intercept and read it.  You can achieve that by the `--https=443` parameter in the command below.
++ Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Otherwise it won't be possible to setup a funnel.  The people from Tailscale have made this requirement, because - once your data leaves the encrypted funnel via the public endpoint - your data will be transported over the internet where hackers can intercept and read it.  You can achieve a https connection, via the `--https=443` parameter in the command below.
 + Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
 
 ## Setup a funnel
 Such a funnel can be setup like this:
 
-1. Logon to the raspberry pi where Node-RED is running.
-2. Start the funnel as a background process, so it keeps running after you have closed your terminal session:
+1. Logon to your Tailscale account.
+2. Make sure the reverse proxies in your Tailscale agents are allowed to setup funnels.  To do that, make sure the following attribute is available in your *"Access Control"* tabsheet:
+   ```
+   "nodeAttrs": [
+      {
+        "target": ["autogroup:member"],
+        "attr":   ["funnel"],
+      },
+   ], 
+3. Logon to the raspberry pi where Node-RED is running.
+4. Start the funnel as a background process, so it keeps running after you have closed your terminal session:
    ```
    sudo tailscale funnel --https=443 --bg --set-path / http://localhost:3001
    ```
-3. The output of this command will show the public url (https://your_machine_name.your_tailnet_name.ts.net)  where you can access this funnel.
-4. Open the url https://your_machine_name.your_tailnet_name.ts.net/check on your browser, and you should get the test page of the smarthome node:
+   The advantage of using the standard https port 443 is that browsers will add it automatically to any https url, when not specified explicit.  However when port 443 is already in use on your device by another application, you could also use ports 8443 or 10000.  Any other port numbers are currently ***not*** supported for funnels.  This limitation is in most use cases not a show stopper, because you can serve multiple local services on the same https port (by using sub paths).
+5. The output of this command will show the public url (https://your_machine_name.your_tailnet_name.ts.net)  where you can access this funnel.
+6. Open the url https://your_machine_name.your_tailnet_name.ts.net/check on your browser, and you should get the test page of the smarthome node:
 
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e69f56a3-85cb-4a4b-a17f-635b6b618a79)
 
    Make sure to test this from a browser on a device that is not part of your tailnet, or turn your Tailscale agent off on your device.  Otherwise you are not sure whether you are accessing the local service via your tailnet (instead of via the public endpoint on the internet).
 
-6. Optional.  You can stop the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.
-7. As long as the funnel is active, you will see it in the *"Machines"* tabsheet:
+7. Optional.  You can stop the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.  Note that an extra parameter `-f` can be added to tail the file, when you want to see live updates of the logs.
+8. As long as the funnel is active, you will see it in the *"Machines"* tabsheet:
  
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
 
