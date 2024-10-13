@@ -13,8 +13,14 @@ However such a private service can be made public accessible via the internet, b
 ## Setup a funnel
 Such a funnel can be setup like this:
 
-1. Logon to your Tailscale account.
-2. Make sure the reverse proxies in your Tailscale agents are allowed to setup funnels.  To do that, make sure the following attribute is available in your *"Access Control"* tabsheet:
+1. Make sure the local service (which we will make available public soon) does not use https, but ***plain http***.  Like said before (when serving a local service within your tailnet), it is not very useful to use https on a single device between the Tailscale agent and the local service.
+
+   For example the node-red-contrib-google-smarthome node can be configured to not setup https on its own:
+
+   ![image](https://github.com/user-attachments/assets/eb5b40f6-0c48-456d-bdaf-4293891ef446)
+
+2. Logon to your Tailscale ***account***.
+3. Make sure the reverse proxies in your Tailscale agents are ***allowed*** to setup funnels.  To do that, make sure the following attribute is available in your *"Access Control"* tabsheet:
    ```
    "nodeAttrs": [
       {
@@ -22,21 +28,21 @@ Such a funnel can be setup like this:
         "attr":   ["funnel"],
       },
    ], 
-3. Logon to the raspberry pi where Node-RED is running.
-4. Start the funnel as a background process, so it keeps running after you have closed your terminal session:
+4. Logon to the raspberry pi where Node-RED is running.
+5. ***Start*** the funnel as a background process, so it keeps running after you have closed your terminal session:
    ```
    sudo tailscale funnel --https=443 --bg --set-path / http://localhost:3001
    ```
    The advantage of using the standard https port 443 is that browsers will add it automatically to any https url, when not specified explicit.  However when port 443 is already in use on your device by another application, you could also use ports 8443 or 10000.  Any other port numbers are currently ***not*** supported for funnels.  This limitation is in most use cases not a show stopper, because you can serve multiple local services on the same https port (by using sub paths).
-5. The output of this command will show the public url (https://your_machine_name.your_tailnet_name.ts.net)  where you can access this funnel.
-6. Open the url https://your_machine_name.your_tailnet_name.ts.net/check on your browser, and you should get the test page of the smarthome node:
+6. The ***output*** of this command will show the public url (https://your_machine_name.your_tailnet_name.ts.net)  where you can access this funnel.
+7. Open the ***url*** https://your_machine_name.your_tailnet_name.ts.net/check on your browser, and you should get the test page of the smarthome node:
 
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e69f56a3-85cb-4a4b-a17f-635b6b618a79)
 
    Make sure to test this from a browser on a device that is not part of your tailnet, or turn your Tailscale agent off on your device.  Otherwise you are not sure whether you are accessing the local service via your tailnet (instead of via the public endpoint on the internet).
 
-7. Optional.  You can stop the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.  Note that an extra parameter `-f` can be added to tail the file, when you want to see live updates of the logs.
-8. As long as the funnel is active, you will see it in the *"Machines"* tabsheet:
+8. Optional.  You can ***stop*** the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.  Note that an extra parameter `-f` can be added to tail the file, when you want to see live updates of the logs.
+9. As long as the funnel is ***active***, you will see it in the *"Machines"* tabsheet:
  
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
 
