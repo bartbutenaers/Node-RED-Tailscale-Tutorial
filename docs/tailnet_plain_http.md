@@ -36,3 +36,10 @@ On our virtual devices there might be one or more local services be running, and
 
    ![image](https://github.com/user-attachments/assets/df585c26-46a8-421a-a2b7-183733f560fd)
 
+## Path to flow editor
+
+By default your flow editor will become available at `http://your-device-virtual-ip-address:1880`.  Optionally the flow editor can be made accessible at a sub-path, for example at `http://your-device-virtual-ip-address:1880/my_flow_editor`, by adjusting following property in your Node-RED settings.js file:
+```
+httpAdminRoot: '/my_flow_editor',
+```
+That way you have both sub-paths for the dashboard and flow editor, which is a bit more organised.  Moreover it becomes more difficult for hackers to guess the correct url.
