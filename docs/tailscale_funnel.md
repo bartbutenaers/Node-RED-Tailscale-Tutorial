@@ -4,9 +4,10 @@ You need for example to make port 3001 of the node-red-contrib-google-smarthome 
 
 However such a private service can be made public accessible via the internet, by creating a secure tunnel to that service.  A Tailscale ***funnel*** is a secure tunnel from such a service, to a public endpoint in the cluster of Tailscale funnel servers.  Once setup, the internal service is exposed as a public service on the internet.  Now the requests from the public endpoint pass - via the secure funnel - through your tailnet, but without access to any other device within your tailnet.  Indeed the requests can only access the local service that you have made public:
 
-![image](https://github.com/user-attachments/assets/91d51c8d-568b-4d24-9bc6-dca9f65e062d)
+![image](https://github.com/user-attachments/assets/38c5ca87-d4f6-4db7-ac10-8cd2c3c46634)
 
 ***CAUTION:*** 
++ Unlike e.g. Cloudflare tunnels, the Tailscale endpoint doesn't add additional security.  So hackers can access the remote service, which means some extra security is advised.  See later on in this tutorial for examples.
 + Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Otherwise it won't be possible to setup a funnel.  The people from Tailscale have made this requirement, because - once your data leaves the encrypted funnel via the public endpoint - your data will be transported over the internet where hackers can intercept and read it.  You can achieve a https connection, via the `--https=443` parameter in the command below.
 + Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
 
@@ -33,6 +34,8 @@ Such a funnel can be setup like this:
    ```
    sudo tailscale funnel --https=443 --bg --set-path / http://localhost:3001
    ```
+   The Tailscale agent will ask the Tailscale relay servers to setup an endpoint with a TLS proxy.  All https requests arriving on that endpoint will be forwarded through the funnel to the Tailscale agent.
+
    The advantage of using the standard https port 443 is that browsers will add it automatically to any https url, when not specified explicit.  However when port 443 is already in use on your device by another application, you could also use ports 8443 or 10000.  Any other port numbers are currently ***not*** supported for funnels.  This limitation is in most use cases not a show stopper, because you can serve multiple local services on the same https port (by using sub paths).
 6. The ***output*** of this command will show the public url (https://your_machine_name.your_tailnet_name.ts.net)  where you can access this funnel.
 7. Open the ***url*** https://your_machine_name.your_tailnet_name.ts.net/check on your browser, and you should get the test page of the smarthome node:
