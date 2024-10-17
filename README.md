@@ -30,10 +30,10 @@ To setup a secure network connection to your Node-RED system (flow editor, dashb
 
 ![image](https://github.com/user-attachments/assets/8bfa3d46-787b-4c1b-a2b0-abe41a669398)
 
-You could also prefer to install your own ***reverse-proxy*** software locally to achieve a similar result, but that has some disadvantages for my use case:
-+ You have to setup a reverse-proxy (e.g. Caddy, Nginx, ...) which is quite complex.
-+ You have to maintain your setup continiously (e.g. install security patches as soon as vulnerabilities are being reported).
-+ You have to setup access control yourself to reduce the number of devices that can access your system.
+You could also prefer to install your own ***reverse-proxy*** software locally to achieve a similar result, but that has some disadvantages:
++ Setup a reverse-proxy (e.g. Caddy, Nginx, ...) is quite complex.
++ Maintaining your setup continiously is a must (e.g. install security patches as soon as vulnerabilities are being reported).
++ Setup of access control is a must, to reduce the number of devices that can access your system.
 + And so on ...
 
 Such a reverse-proxy setup would become a tough nut to crack for a lot of Node-RED users.  Let the security experts from the third-party service do their job, while you have have time to do fun stuff with Node-RED meanwhile ;-)
@@ -48,13 +48,12 @@ Some of those available third-party services also offer a limited free version, 
 | VPN  | Easy to setup  | No Letsencrypt certificates, limited traffic, ...  |
 
 Although these services are very decent and popular choices, they simply didn't match my *personal use case*:
-+ My free time is too limited to setup and maintain something complex like Cloudflare.  Although I have to admit that Cloudflare is better compared to Tailscale in many areas.
-+ One day I will need to explain my wife and kids how stuff works in our house, in case I ever won't be around anymore.  Which will be FAR from easy, so I 'try' to keep it as simple as possible...
-+ I don't want to make my setup too complex, by having to setup and maintain my own reverse proxy (like e.g. Caddy, Nginx, ...).  Therfore I want a networking service that offers a reverse proxy.
-+ I don't want any security related stuff inside Node-RED anymore, because the powers of Node-RED can be abused by hackers to disable its own security (once he would have arrived inside Node-RED).  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should take care of the Letsencrypt certificates too.
-+ I don't want to setup my own client access control system (e.g. ip address whitelist, ...) to stop unauthorized devices from accessing my Node-RED system.  The network service should take care of such access control too.
++ Not enough free time to setup Cloudflare, although Cloudflare is better compared to Tailscale in many areas.
++ A setup with Cloudflare is too complex to explain to the familly how it works.
++ To avoid setting up my own reverse proxy,  the networking service should offer one.
++ The security should be setup outside Node-RED, because the powers of Node-RED can be abused by hackers to disable its own security.  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should offer Letsencrypt certificates.
 
-Fortunately Tailscale is a service that offers all the security features that I need.  And it is 'quite' understandable.  That is the reason why I preferred using Tailscale, instead of the other available services.
+Fortunately Tailscale is a service that offers all the security features that I need, which is why I started using it.
 
 ## Introduction to Tailscale
 Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, as long as you have a Tailscale ***agent*** installed on all those devices.  In contradiction to a normal VPN, Tailscale offers a ***peer-to-peer mesh network*** which is called a ***tailnet***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Such direct connections between your devices offer multiple advantages:
