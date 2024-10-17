@@ -6,10 +6,7 @@ However such a private service can be made public accessible via the internet, b
 
 ![image](https://github.com/user-attachments/assets/38c5ca87-d4f6-4db7-ac10-8cd2c3c46634)
 
-***CAUTION:*** 
-+ Unlike e.g. Cloudflare tunnels, the Tailscale endpoint doesn't add additional security.  So hackers can access the remote service, which means some extra security is advised.  See later on in this tutorial for examples.
-+ Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Otherwise it won't be possible to setup a funnel.  The people from Tailscale have made this requirement, because - once your data leaves the encrypted funnel via the public endpoint - your data will be transported over the internet where hackers can intercept and read it.  You can achieve a https connection, via the `--https=443` parameter in the command below.
-+ Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
+***CAUTION:*** See security section below before you setup a funnel!!
 
 ## Setup a funnel
 Such a funnel can be setup like this:
@@ -50,7 +47,6 @@ Such a funnel can be setup like this:
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
 
 ## Show funnel status
-
 Afterwards it is always possible to get the current status of your funnel(s).  Use the following command on Linux:
 ```
 tailscale funnel status
@@ -67,6 +63,29 @@ https://<your_virtual_host_name>.<your_tailnet_name>.ts.net (Funnel on)
 |-- / proxy http://localhost:3001
 ```
 As you can see, the output does also show the local services which are available within your *tailnet only*.  Which are the local services published previously via the command `tailscale serve ...`.  So in fact the `status` shows the entire configuration of the Tailscale agent's reverse proxy.  Which is a bit confusing because `tailscale serve status` also shows both the local and public services.
+
+## Security
+A funnel is a weak point in your security.  Because it allows all clients from the internet to access your local service, i.e. client devices which are ***not*** members of your tailnet.
+
+Therefore it is really required to have some extra security:
++ Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  Because once it becomes public, bots will detect it and try to hack it.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
++ Make sure you have a ***https*** connection, based on LetsEncrypt certificates (via Tailscale)!  Otherwise it won't be possible to setup a funnel.  The people from Tailscale have made this requirement, because - once your data leaves the encrypted funnel via the public endpoint - your data will be transported over the internet where hackers can intercept and read it.  You can achieve a https connection, via the `--https=443` parameter in the command below.
++ It would be good to block malicious clients in the ***endpoint*** on the Tailscale Relay Funnel servers, because that is the entry point of all external traffic:
+   + Block well known bots
+   + IP whitelisting
+   + Rate limiting to prevent DDOS attacks: limit the number of messages that can be send to your local service.
+   + ...
+
+   Cloudflare tunnels allow such kind of security, however unfortunately Tailscale doesn't.  I have registered a [feature request](https://github.com/tailscale/tailscale/issues/13809) for filtering control options in the Access Control list, and their lead developer was positive about the suggestion.  But currently there is nothing available, so malicious clients can access your server (e.g. Raspberry Pi) and you need to block them over there.
++ Install an ***extra reverse proxy*** (e.g. Caddy, NGinx, ...) in between the Tailscale agent and your local service.  Of course then you have 2 reverse proxies in series, which will make the setup again a bit more complex.
++ Add some ***firewall rules*** e.g. in iptables on Raspberry e.g. for rate limiting to limit the effect of DDOS attacks:
+   ```
+   iptables -A INPUT -p tcp --dport 3001 -m connlimit --connlimit-above 10 -j REJECT
+   iptables -A INPUT -p tcp --dport 3001 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
+   ```
+   ***TODO: this is NOT tested yet and should be reviewed!!***
++ While it is better to add security before a local service, it might not harm to put some extra security ***inside*** the local service.  For example I registered a [feature request](https://github.com/mikejac/node-red-contrib-google-smarthome/discussions/596) to make sure the node-red-contrib-google-smarthome node only allows access to IP addresses from Google API servers.  I am a bit stuck with that, due to [this](https://github.com/silverwind/cidr-tools/issues/24) issue.
++ ...
 
 ## Troubleshooting
 Some tips to help you troubleshooting a funnel that is not working as expected:
