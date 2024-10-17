@@ -84,7 +84,9 @@ Therefore it is really required to have some extra security:
    iptables -A INPUT -p tcp --dport 3001 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
    ```
    ***TODO: this is NOT tested yet and should be reviewed!!***
-+ While it is better to add security before a local service, it might not harm to put some extra security ***inside*** the local service.  For example I registered a [feature request](https://github.com/mikejac/node-red-contrib-google-smarthome/discussions/596) to make sure the node-red-contrib-google-smarthome node only allows access to IP addresses from Google API servers.  I am a bit stuck with that, due to [this](https://github.com/silverwind/cidr-tools/issues/24) issue.
++ While it is better to add security before a local service, it might not harm to put some extra security ***inside*** the local service:
+   + I registered a [feature request](https://github.com/mikejac/node-red-contrib-google-smarthome/discussions/596) to make sure the node-red-contrib-google-smarthome node only allows access to IP addresses from Google API servers. 
+   + For a NodeJs application like Node-RED or node-red-contrib-google-smarthome, it could be useful to implement rate limiting via the express-rate-limit npm library.
 + ...
 
 Note that the Tailscale Funnel Relay servers pass the client ip-address via the `Tailscale-Ingress-Src` http header, in case it is needed on the target device.
