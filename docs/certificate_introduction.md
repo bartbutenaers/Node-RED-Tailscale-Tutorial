@@ -4,7 +4,7 @@ During the SSL/TLS handshake between a client and a server, the server will shar
 
 ## Why do we need certificates
 
-The client needs to make sure that the public key is being send by the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept the client's https request to the server, and return his own fake public key of his own serve.  In that case the client would setup - without knowing - a secure https connection to the hacker's server.  And then the hacker can decrypt and read all the condifidential data send by the client (via its private key):
+The client needs to make sure that the public key is being send by the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept the client's https request to the server, and return his own fake public key of his own server.  In that case the client would setup - without knowing - a secure https connection to the hacker's server.  And then the hacker can decrypt and read all the condifidential data send by the client (via its private key):
 
 ![image](https://github.com/user-attachments/assets/9e5f3009-70a0-4c6d-8f93-33af29867d81)
 
@@ -38,7 +38,7 @@ A hacker could create a CSR for a hostname from somebody else.  If a CA would si
 
 ## Self-signed certificates
 
-A hacker could of course sign his own certificate (pretending to be some kind of CA) containing our hostname (as common name).  However when he sends a CSR to a trusted CA, they will check whether the requestor of the certificate owns the domain/hostname (which is specified int the request): see nex  Since the hacker has no root access to our domain, he cannot prove that he owns the domain.  Since the CA will reject the CSR, the hacker can only sign his certificate by himself.  Butt then he ends up with a ***self-signed certificate***, which are not considered secure by most clients (e.g. browsers, NodeJs, ...).  In other words decent https client software will reject such self signed certificates, because such clients will execute ***3 checks*** when a certificate arrives (during setup of a https connection):
+A hacker could of course sign his own certificate (pretending to be some kind of CA) containing our hostname (as common name).  However when he sends a CSR to a trusted CA, they will check whether the requestor of the certificate owns the domain/hostname (which is specified int the request).  Since the hacker has no root access to our domain, he cannot prove that he owns the domain.  Because the CA will reject the CSR, the hacker can only sign his certificate by himself.  But then he ends up with a ***self-signed certificate***, which are not considered secure by most clients (e.g. browsers, NodeJs, ...).  In other words decent https client software will reject such self signed certificates, because such clients will execute ***3 checks*** when a certificate arrives (during setup of a https connection):
 + Is the validity period of the certificate not passed yet.
 + Does the common name in the certificate match with the hostname in the url, i.e. the hostname to which we have send this request.
 + Has the certificate being signed by one of a list of trusted CA's (GlobalSign, Verisign, LetsEncrypt, ...).
