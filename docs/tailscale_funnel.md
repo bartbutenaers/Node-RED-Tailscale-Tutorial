@@ -34,7 +34,7 @@ Such a funnel can be setup like this:
    Explanation:
    + Listen to https requests on port 443, and start https connection (so create and renew a LetsEncrypt certificate).
    + Run as a background (bg) job, to make sure it keeps running when the command shell window is closed.
-   + The root path is e.g. `/`, but you can choose something else (see sub-paths below).
+   + The root path is e.g. `/`, but you can choose something else.
    + All requests will be forwarded to port 3001 on localhost.
    
    The Tailscale agent will ask the Tailscale relay servers to setup an endpoint with a TLS proxy.  All https requests arriving on that endpoint will be forwarded through the funnel to the Tailscale agent.
