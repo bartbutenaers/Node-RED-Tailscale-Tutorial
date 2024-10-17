@@ -22,8 +22,8 @@ Obviously when you would use Node-RED only offline, you could minimize the risk 
 ## Security basics
 The following articles provice technical details about some of the terminology used in this repository.  It is ***NOT*** required to read this, but it will give you some background information about how stuff works behind the scenes.  
 
-+ ***Basics of https***: explains why you need a private key and public key for https (see [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/https_introduction.md)).
-+ ***Basics of (LetsEncrypt) certificates***: explains why you need LetsEncrypt certificates (see [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/certificate_introduction.md)).
++ ***Basics of https***: explains why you need a private key and public key for https (see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/https_introduction.md)).
++ ***Basics of (LetsEncrypt) certificates***: explains why you need LetsEncrypt certificates (see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/certificate_introduction.md)).
 
 ## Why using Tailscale
 To setup a secure network connection to your Node-RED system (flow editor, dashboard, local endpoints, ...) from the internet, it is higly advised to use a trusted third-party ***networking service***.  Such a service is used between Node-RED and the internet, to handle all the complex security stuff:
@@ -64,9 +64,9 @@ Tailscale allows you to create a ***virtual private network (VPN)*** between all
 
 When you want to access your Node-RED dashboard (running on a Raspberry Pi) from your smartphone, you need to install a Tailscale agent both on your Raspberry Pi and your smartphone.  Once you have added both devices (i.e. Tailscale agents) in your Tailscale account, they become part of your own ***tailnet***.  As a result both devices can communicate directly to each other via their Tailscale agents.  This means you can navigate with your smartphone browser to the (virtual!) hostname of your Raspberry Pi, to see your Node-RED dashboard:
 
-![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
+![image](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/assets/14224149/580d9544-ee09-431a-bd41-8c1d80707a80)
 
-You can read [here](https://github.com/bartbutenaers/Node-RED-security-basics/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
+You can read [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
 
 ## Access control within Node-RED
 When using e.g. port forwarding it is very useful to implement access control (e.g. IP address whitelisting) inside Node-RED, to limit which client devices are allowed to access Node-RED. However when the access to Node-RED will become restricted to the devices within your tailnet, there is *'less'* need to implement access control inside Node-RED yourself.  Of course some extra security will never be bad...
