@@ -1,16 +1,17 @@
 # Use https in your tailnet
-Previously we have deactivated https in Node-RED.  Now we are going to activate it again, but we will now use the reverse proxy in the Tailscale agent to accomplish that.  Because it is much safer to handle all the security stuff in a reverse proxy ***between*** Node-RED and the internet.  Because when the security would be handled ***inside*** Node-RED, hackers can abuse the power of Node-RED to disable its own security.
+Previously we have deactivated https inside Node-RED.  But since we want to access Node-RED again via https, we will now use the reverse proxy in the Tailscale agent to accomplish that.  Because it is much safer to handle all the security stuff in ***between*** Node-RED and the internet.  Indeed when the security would be handled ***inside*** Node-RED, hackers can abuse the power of Node-RED to disable its own security.
 
-The data between the Tailscale agents in your tailnet is already encrypted, using the Wireguard protocol.  As a result all you data will be send in a secure way between your virtual devices in your tailnet, across the internet.  Which means it is already safe enough to get started, without any need to activate https!  In other words you can use ***plain http*** to access Node-RED, since all data is exchanged within your secure tailnet.
+## Encrypted mesh network
+The data between the Tailscale agents in your tailnet is already encrypted, using the Wireguard protocol.  As a result all you data will be send in a secure way between your virtual devices in your tailnet, across the internet.  Which means it is already safe enough to access Node-RED via ***plain http***, since all data is exchanged within your secure tailnet.
 
-However it is still very useful to activate https, because the data is only encrypted ***between*** the Tailscale agents.  Data that you send into a Tailscale agent will be encrypted by that agent, and the data will be decrypted by the agent that receives that encrypted data.  As a result if you send unencrypted data into your tailnet, it will leave your tailnet unencrypted.  What goes in will come out..
+However it is still very useful to activate https, because the data is only encrypted ***between*** the Tailscale agents.  Data that you send into a Tailscale agent will be encrypted by that agent, and the data will be decrypted by the other agent that receives that encrypted data.  As a result if you send unencrypted data into your tailnet, it will leave your tailnet unencrypted.  What goes in will come out..
 
 So the tailnet will simply pass your data transparent (without reading or changing the content), whether it is http or https traffic:
 
 ![image](https://github.com/user-attachments/assets/1f66b508-d180-4e14-8a8e-c55b9a6360c3)
 
 ## Why use https
-There are a few reasons why you should setup a ***https*** connection through the encrypted tailnet:
+There are a few reasons why you should setup a ***https*** connection through the already encrypted tailnet (which will result in double encryption):
 + When you have very confidential data, and you don’t trust that e.g. the Tailscale agents don't read the data (before encrypting it via Wireguard).
 + When the receiver expects https (based on signed certificates), like for example the Google Action Console servers (to receive voice commands from a Google Home device).
 + When web-push notifications are being used in the Node-RED dashboard, because modern browsers only allow such notifications when https is used (based on signed certificates like e.g. LetsEncrypt).
@@ -30,13 +31,19 @@ To setup a https connection to a local service (e.g. Node-RED), a certificate wi
 
 A much better solution is to start using certificates for your domain/hostname, which are signed by a trusted certifcation authority (CA).  LetsEncrypt is a CA that offers certificated fully atomated and without any cost.  Most systems (e.g. browsers, NodeJs, ...) trust LetsEncrypt, so they accept such https connections.  Fortunately Tailscale agents can request LetsEncrypt certificates automatically (with common name the virtual hostname of the device in the tailnet).  
 
-To generate a LetsEncrypt certificate on our Raspberry Pi (where Node-RED is running), you might tell the Tailscale agent to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However we will ***NOT*** do it like that.  Because it is even more easier to just tell the agent that you need a https connection on a specified port, and then the agent will automatically take care of everything:
+To generate a LetsEncrypt certificate on our Raspberry Pi (where Node-RED is running), you might tell the Tailscale agent explicit to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However we will ***NOT*** do it like that.  Because it is even more easier to just tell the agent that you need a https connection on a specified port, and then the agent will automatically take care of everything:
 
-Execute the following command to ***'serve'*** the local Node-RED service ***within your tailnet only*** via https:
+Execute the following command to ***'serve'*** the local Node-RED service via https:
 ```
-tailscale serve --https=9123 --bg --set-path /my_serve http://localhost:1880
+tailscale serve --https=9123 --bg --set-path / http://localhost:1880
 ```
-That way you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 9123 via a https server, and forward these as http requests to port 1880 on localhost.
+Some explanation:
++ Listen to https requests on port 9123, and start https connection (so create and renew a LetsEncrypt certificate).
++ Run as a background (bg) job, to make sure it keeps running when the command shell window is closed.
++ The root path is e.g. `/`, but you can choose something else.
++ All requests will be forwarded to port 1880 on localhost.
+
+That way you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 9123 via a https server, and forward these as http requests to port 1880 on localhost.  The local (Node-RED) service will become this way ***only accessible within the tailnet*** via https.
 
 Remarks:
 + The port 9123 is random unused port that I have choosen.
@@ -67,6 +74,7 @@ This section explains in detail what happens behind the scenes if a local servic
 1. Execute the `tailscale serve ...` command, to configure the reverse proxy inside the Tailscale agent.
 2. The agent sends a request to the Tailscale Control servers, to get a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
 3. The Tailscale Control servers forward the request to the LetsEncrypt service, which will check if Tailscale owns the public domain *"your-machine-name.your-tailnet-name.ts.net"*.
+   
    Remark: The Tailscale control servers will create a *.ts.net DNS TXT record for your subdomain, to complete their DNS-01 challenges for LetsEncrypt. 
 4. Since that is the case (because tailscale owns all the subdomains of *.ts.net), the LetsEncrypt service will return a LetsEncrypt certificate to the Tailscale Control servers.
 5. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
