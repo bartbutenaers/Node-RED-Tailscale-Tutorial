@@ -23,10 +23,10 @@ Activating hostnames for agents in our tailnet is rather simple:
 
    From now on, your devices are known by their machine name within the tailnet.
 
-4. You can test this by navigating in your browser to the virtual host name of your Raspberry Pi, in order to open the Node-RED dashboard D2 (which should now be available at `http://your_virtual_device_name.your_tailnet_name.ts.net:1880/dashboard`):
+4. You can test this by navigating in your browser (via plain http) to the virtual host name of your Raspberry Pi, in order to open the Node-RED dashboard D2 (which should now be available at `http://your_virtual_device_name.your_tailnet_name.ts.net:1880/dashboard`):
 
    ![image](https://github.com/user-attachments/assets/14f6e307-38ac-4dee-b1e8-f366609f725a)
 
    When you have setup previously a `httpAdminRoot` (e.g. "my_flow_editor) in your Node-RED settings.js file, the url becomes `http://your_virtual_device_name.your_tailnet_name.ts.net:1880/my_flow_editor/dashboard`.
 
-Note that your tailnet name is not required in the url, so you can also navigate to `http://your_virtual_device_name:1880/dashboard`.
+Note that your tailnet name is not required in the url, so you can also navigate to the shorthand url `http://your_virtual_device_name:1880/dashboard`.
