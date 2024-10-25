@@ -109,16 +109,16 @@ A Tailscale ***funnel*** is a secure tunnel between a local service and a public
 
 ![image](https://github.com/user-attachments/assets/dcc162b9-9f1f-44c4-853c-8ad77e22b3ee)
 
-1. Execute the `tailscale funnel ...` command to setup a funnel.
-2. The Tailscale agent will configure its ***reverse proxy*** to listen to the specified port (e.g. 443).
+1. Execute the `tailscale funnel ...` ***command*** to setup a funnel.
+2. The Tailscale agent will configure its ***reverse proxy***, to listen to the specified port (e.g. 443).
 3. The tailscale agent sends a ***request*** to the Tailscale Funnel Relay servers, to create a funnel to our local service (via port 443).
 4. The Tailscale funnel relay servers will create a public funnel:
-   + Setup public ***DNS records*** which refer to your subdomain on the Funnel Relay servers.
+   + Setup public ***DNS records***, which refer to your subdomain on the Funnel Relay servers.
    + Then ***DNS propagation*** occurs, i.e. updating these DNS records across the internet to make them recognized globally.  That can take up to 10 minutes!
    + Once this is completed, a TCP proxy will be setup to forward all the https requests (for your subdomain) to your Tailscale agent.
 5. Enter the url (see the output of the command from step 1) as ***fulfillment url*** in your Google Action Console (see [setup instructions](https://github.com/mikejac/node-red-contrib-google-smarthome/blob/master/docs/setup_instructions.md#create-project-in-actions-console) of the node-red-contrib-google-smarthome node).  That way Google knows where to send the voice commands.
-6. When you ask your Google Home device to execute a command, it will forward the voice command to the Google Action servers.
-7. The Google Action servers will forward the voice command to Tailscale Funnel Relay servers, via the fulfillment url you have specified.
-8. The TCP proxy on the Tailscale Funnel Relay servers will forward the https request - via the funnel - to your Tailscale agent.
-9. The reverse proxy in the Tailscale agent will do SSL termination, and pass a http request to your local service (in this case the node-red-contrib-google-smarthome node listening to port 3001).
-10. The node-red-contrib-google-smarthome node will make the voice command available in your Node-RED flow, so the requested action can be executed.  E.g. turn a light on.
+6. When you ask your Google Home device to execute a command, it will forward the ***voice command*** to the Google Action servers.
+7. The ***Google Action servers*** will forward the voice command to Tailscale Funnel Relay servers, via the fulfillment url you have specified.
+8. The TCP proxy on the Tailscale Funnel Relay servers will forward the ***https request*** - via the funnel - to your Tailscale agent.
+9. The reverse proxy in the Tailscale agent will do SSL termination, and pass a ***http request*** to your local service (in this case the node-red-contrib-google-smarthome node listening to port 3001).
+10. The node-red-contrib-google-smarthome node will make the voice command available in your Node-RED ***flow***, so the requested action can be executed.  E.g. turn a light on.
