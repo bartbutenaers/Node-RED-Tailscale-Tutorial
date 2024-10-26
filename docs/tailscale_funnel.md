@@ -45,12 +45,26 @@ Such a funnel can be setup like this:
 
    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e69f56a3-85cb-4a4b-a17f-635b6b618a79)
 
-   Make sure to test this from a browser on a device that is not part of your tailnet, or turn your Tailscale agent off on your device.  Otherwise you are not sure whether you are accessing the local service via your tailnet (instead of via the public endpoint on the internet).
+   Remarks:
+   + Make sure to test this from a browser on a device that is not part of your tailnet, or turn your Tailscale agent off on your device.  Otherwise you are not sure whether you are accessing the local service via your tailnet (instead of via the public endpoint on the internet).
+   + This test page only appears when you have enabled the following checkbox in the node-red-contrib-google-smarthome config node (otherwise only the text "SUCCESS" is displayed):
 
-9. Optional.  You can ***stop*** the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.  
-10. As long as the funnel is ***active***, you will see it in the *"Machines"* tabsheet:
+      ![image](https://github.com/user-attachments/assets/29230efa-e287-4b70-ab1b-7078005215a2)
+
+   + If this doesn't work, you can also try to access the same test page directly (i.e. not via your tailnet), e.g. by using the ***physical ip address*** of the device running Node-RED:
+
+      ![image](https://github.com/user-attachments/assets/4192f577-6f66-4349-aae8-b7ae13a20a16)
+
+10. Optional.  You can ***stop*** the funnel via the command `sudo tailscale funnel --https=443 off`.  Use this command once you don't need a funnel anymore, to reduce the risk of getting hacked.  
+11. As long as the funnel is ***active***, you will see it in the *"Machines"* tabsheet:
  
-   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
+    ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e49f1111-3ecd-41c9-a670-1e96e72a90d7)
+
+12. Add that url (with sub-path *"/smarthome"* i.e. https://your_machine_name.your_tailnet_name.ts.net/smarthome) as fulfillment url in your Google Action Console:
+
+    ![image](https://github.com/user-attachments/assets/1b38fdc2-7afb-4fe7-a190-613886432a68)
+
+    Google will send all voice commands via that URL to your node-red-contrib-google-smarthome node.
 
 ## Show funnel status
 Afterwards it is always possible to get the current status of your funnel(s).  Use the following command on Linux:
