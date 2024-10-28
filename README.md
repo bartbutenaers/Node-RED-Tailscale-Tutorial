@@ -97,6 +97,9 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 7. Setup a public tunnel (called ***funnel***) to allow third-party services to access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 8. Finally specify which devices are allowed to communicate with each other (within your tailnet), using Access Control Lists (ACL): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_access_control.md).
 
+## Troubleshooting
+There is a lot of stuff involved, so troubleshooting isn't always easy.  I have created a list of tips from my own experience: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/troubleshooting.md).
+
 ## !!! Disclaimer !!!
 It is important to note that while I try to strive for accuracy, I’m not an expert in this field.  The information provided in this repository is intended to be a helpful guide, but it’s not exhaustive or infallible. While this information can enhance your system’s security, there is no guarantee for complete protection against all potential threats.
 
