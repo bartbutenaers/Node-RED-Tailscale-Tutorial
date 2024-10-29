@@ -6,7 +6,7 @@ All Tailscale agents are connected to each other using a mesh network.  All thos
 
 ![image](https://github.com/user-attachments/assets/8bc42906-bfaa-4f15-868a-17a04256718a)
 
-They use Wireguard to encrypt all the data being send, because your device (running a Tailscale agent) might be located on the internet.  And you don't want other people to be able to intercept your data.  As a result it is secure to use (insecure) http connections ***within*** your Tailnet, because only your devices (running a Tailscale agent) have access to those http connections.
+The Tailscale agents use Wireguard to encrypt all the data being send, because your device (running a Tailscale agent) might be located on the internet.  And you don't want other people to be able to intercept your data.  As a result it is secure to use http connections ***within*** your Tailnet, because only your devices (running a Tailscale agent) have access to those http connections.
 
 ## Disable https in Node-RED!
 When you have previously setup https in Node-RED, it is advised to turn it off.  That can be achieved by putting the following statements (in settings.js file) in comment, and restart Node-RED:
