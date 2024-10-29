@@ -41,7 +41,7 @@ It is ***not*** required to read this detailed information, but it helps to gain
 
 On your virtual devices there might be one or more local services running, which are listening to ports.  For example the Node-RED service is listening by default to port 1880.  Be aware that by default ***ALL*** local services become accessible via the Tailscale agent to all your devices in your tailnet!  In most cases that shouldn't be a problem, because your tailnet only contains trusted devices which are allowed to access your services.  However if you don't want that, you can find information later on how you can limit which ports are accesible via your tailnet (see section about Access Control).
 
-![image](https://github.com/user-attachments/assets/a415a914-4f76-4f45-9a49-e73635356928)
+![image](https://github.com/user-attachments/assets/94ce55a6-03f6-4be5-a027-a2a69204d443)
 
 1. Navigate on any device (running a Tailscale agent) to the Node-RED dashboard, by entering the url in your browser on your smartphone:
 
@@ -59,6 +59,10 @@ On your virtual devices there might be one or more local services running, which
 6. Node-RED will return a http response. After the http response has travelled the entire traject backwards, the Node-RED dashboard should appear in the browser (via plain http):
 
    ![image](https://github.com/user-attachments/assets/df585c26-46a8-421a-a2b7-183733f560fd)
+
+7. Note that you can still navigate directly to Node-RED, via the physical ip address (or hostname) of the device: http://<your-physical-device-ip-address>:1880/dashboard
+   
+   But that will only work when both devices (i.e. smartphone and Raspberry Pi) are within your LAN, because otherwise your modem/router/firewall will block the request (since port forwarding has been disabled previously).  While the url via your tailnet will work whatever the location of your both devices.
 
 It should now already become a bit more clear why we have asked above to disable https inside Node-RED:
 + It has not much use to use https between the Tailscale agent and Node-RED, because the data stays inside your Raspberry Pi which is considered secure.
