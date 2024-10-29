@@ -28,23 +28,26 @@ It might sound very unsecure to turn off https in Node-RED, but we have a few re
 
 Setting up https in the Tailscale agent will be described later on in this tutorial.
 
+## Setup a base url
+Later on, we need to be able to run all applictions at their own base url.  So we need to fix this also for Node-RED.
+
++ The new Node-RED *dashboard* is by default available at base url `/dashboard`.  So that is ok already.
++ The Node-RED *flow editor* is by default available at base url `/`.  You can specify a custom flow editor base url in the settings.js file (and restart Node-RED), for example:
+   ```
+   httpAdminRoot: '/flow_editor',
+   ```
+
 ## Access the local services via http
 On every device in your tailnet, there might be one or more local services running (which are listening to a port).  For example the Node-RED service is listening by default to port 1880.
 
 Be aware that ***ALL the local services become accessible*** in your tailnet, via the Tailscale agent!  In most cases that shouldn't be a problem, because your tailnet only contains trusted devices which are allowed to access your services.  However if you don't want that, you can find information later on how you can limit which ports are accesible via your tailnet (see section about Access Control).
 
-Before setting up https, we will first try to access the Node-RED flow editor via http from any device in your tailnet.  You can do that by navigating to following address in the browser:
+Before setting up https, we will first try to access the Node-RED flow editor and dashboard via http from any device in your tailnet.  You can do that by navigating to following address in the browser:
 ```
-http://your-device-virtual-ip-address:1880/
+http://your-device-virtual-ip-address:1880/flow_editor
+http://your-device-virtual-ip-address:1880/dashboard
 ```
-
-Remarks:
-+ You can find the virtual ip address (of your device running Node-RED) in the *"Machines"* tabsheet on your Tailscale account.
-+ If you have setup following option in your Node-RED settings.js file:
-   ```
-   httpAdminRoot: '/my_flow_editor',
-   ```
-   Then your flow editor will be available at `http://your-device-virtual-ip-address:1880/my_flow_editor`.
+Note: You can find the virtual ip address (of your device running Node-RED) in the *"Machines"* tabsheet on your Tailscale account.
 
 ## How this works behind the scenes
 It is ***not*** required to read this detailed information, but it helps to gain insight in your setup.
@@ -68,4 +71,8 @@ It is ***not*** required to read this detailed information, but it helps to gain
 
    ![image](https://github.com/user-attachments/assets/df585c26-46a8-421a-a2b7-183733f560fd)
 
-7. Note that you can also navigate directly to Node-RED, via the *physical ip address or hostname* of the device (via http://<your-physical-device-ip-address>:1880/dashboard).  However it is ***NOT*** advised to use that, because it will only work when both devices (i.e. smartphone and Raspberry Pi) are within your LAN.  When one of the devices is not insde your LAN, your modem/router/firewall will block the request (since port forwarding has been disabled previously).  On the other hand the url using the tailnet (see step 1) will work wherever your both devices are located.
+7. Note that you can also navigate directly to Node-RED, via the *physical ip address or hostname* of the device:
+   ```
+   http://<your-physical-device-ip-address>:1880/dashboard
+   ```
+   However it is ***NOT*** advised to use that, because it will only work when both devices (i.e. smartphone and Raspberry Pi) are within your LAN.  When one of the devices is not insde your LAN, your modem/router/firewall will block the request (since port forwarding has been disabled previously).  On the other hand the url using the tailnet (see step 1) will work wherever your both devices are located.
