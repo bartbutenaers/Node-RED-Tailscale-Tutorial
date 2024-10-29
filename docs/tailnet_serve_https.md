@@ -1,7 +1,7 @@
 # Use https in your tailnet
 Previously we have deactivated https inside Node-RED, because we explained that the data within your tailnet is already encrypted (via Wireguard connections between 2 Tailscale agents).  As a result it is safe to use http connections within your tailnet, to access the Node-RED flow editor and dashboard.
 
-In this section, we will start using https connections again! But we won't setup https *inside* Node-RED, because hackers could be able to access your Node-RED (and use the power of Node-RED to disable its own security).  Therefore it is better to setup https in a reverse proxy *between* the internet and Node-RED.  In this case the reverse proxy of the Tailscale agent.
+In this section, we will start using https connections again! But as explained before, it is not advised to setup https *inside* the local Node-RED service.  Instead it is better to setup https in a reverse proxy *between* the internet and Node-RED.  Fortunately the Tailscale agents contain a reverse proxy.
 
 ## Tailnet: what goes in, will come out
 It is ***not*** required to read this section.
@@ -41,27 +41,29 @@ A much better solution is to start using certificates for your virtual domain/ho
 
 To generate a LetsEncrypt certificate on our Raspberry Pi (where Node-RED is running), you might tell the Tailscale agent explicit to generate a LetsEncrypt certificate, using the command `tailscale cert your-machine-name.your-tailnet-name.ts.net`.  However we will ***NOT*** do it like that.  Because it is even more easier to just tell the agent that you need a https connection, for https requests on a specified port. Then the agent will automatically take care of everything.
 
-Execute the following command (on the device running Node-RED), to ***'serve'*** the local Node-RED service via https:
+Execute the following command (on the device running Node-RED), to ***'serve'*** the local Node-RED (flow editor) service via https:
 ```
-tailscale serve --https=9123 --bg --set-path / http://localhost:1880
+tailscale serve --https=443 --bg --set-path /flow_editor http://localhost:1880/flow_editor
 ```
-
 Some explanation about the command line parameters:
-+ Listen to https requests on port 9123, and start https connectiosn (and as a result create and renew a LetsEncrypt certificate).
++ Listen to https requests on port 443, and start https connection (and as a result create and renew a LetsEncrypt certificate).  You could use any free port number, but port 443 is the default https port.  So you don't need to specify it in the address bar of your browser, which simplifies the flow editor url.  For example:
+   ```
+   https://your-device-virtual-ip-address/flow_editor
+   ```
+   This url will behind the scenes converted automatically by your browser to:
+   ```
+   https://your-device-virtual-ip-address:443/flow_editor
+   ```
 + Run as a background (bg) job, to make sure the serving keeps running when the command shell window is closed.
-+ The root path is here `/`.  But if a `httpAdminRoot` is used in the settings.js file, that should be added here.
-+ All requests will be forwarded to port 1880 on localhost, to which Node-RED is listening (to plain http connections).
++ The httpAdminRoot path is used here `/flow_editor` (from the settings.js file).
++ All requests will be forwarded to port 1880 on localhost (sub-path 'flow_editor'), to which Node-RED is listening (to plain http connections).
 
-Via the above command you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 9123 via a https server, and forward these as http requests to port 1880 on localhost.  The local (Node-RED) service will now become this way ***only accessible within the tailnet*** via https.
-
-So from now on you can access Node-RED via two different ways:
-+ Via http on port 1880.
-+ Via https on port 9123
+Via the above command you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 443 via a https server, and forward these as http requests to port 1880 on localhost.  The local (Node-RED) service will now become this way ***only accessible within the tailnet*** via https.
 
 Remarks:
-+ The port 9123 is random unused port that I have choosen.
-+ It is absolutely required to specify an arbitrary port number (e.g. 9123), otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
-+ Currently requests can only be forwarded to localhost, not to other hostnames.
++ Node-RED is also still accessible directly via http on port 1880.
++ It is absolutely required to specify a port number (e.g. 443), otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
++ Currently requests can only be forwarded by the reverse proxy to localhost, not to other hostnames.
 + Via `tailscale serve reset` it is possible to remove all current serve's from the reverse proxy.
 + Via `tailscale serve status` you can get a list of all current serve's that have been setup, but it will also show all available funnels (which will be discussed later on).
 + Via the above command we serve a local service via a reverse proxy, however it is also possible to serve files and static texts on your tailnet easily.  This is possible via respectively a file server and a static text server, which are available within the Tailscale agent (see Tailscale [documentation](https://tailscale.com/kb/1242/tailscale-serve)). 
