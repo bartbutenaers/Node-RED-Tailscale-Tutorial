@@ -1,4 +1,4 @@
-# Access via plain http
+# Access Node-RED via plain http
 
 In the previous part we have setup a tailnet, and one of its virtual devices is a Raspberry Pi running Node-RED.  Now we will try to access the Node-RED dashboard (via plain http) from another virtual device inside our tailnet.  For example access the dashboard on an Android smartphone.
 
@@ -27,6 +27,21 @@ It might sound very unsecure to turn off https in Node-RED, but we have a few re
 + Having to setup https in every application results in a rather complex system, while it is easier to maintain when the Tailscale agent can offer this to all applications on the same host.
 
 Setting up https in the Tailscale agent will be described later on in this tutorial.
+
+## Basic authentication
+Because only devices from your tailnet will be able to connect to your Node-RED system, you could turn off basic authentication in Node-RED.  However since Node-RED is a rather critical system in your home automation, it might still be better to enable basic authentication.  That way it is required to enter username and password in the logon screen, as an extra layer of protection.
+
+Basic authentication can be configured in the Node-RED settings.js file:
+```
+adminAuth: {
+   "type": "credentials",
+   "users": [ { "username": "zzz", "password": "xyz", "permissions": "*" } ]
+},
+```
+Note that the password needs to be hashed, before entering it in the above file.  You can do that using following [command](https://nodered.org/docs/user-guide/runtime/securing-node-red#generating-the-password-hash):
+```
+node-red admin hash-pw
+```
 
 ## Setup a base url
 Later on, we need to be able to run all applictions at their own base url.  So we need to fix this also for Node-RED.
