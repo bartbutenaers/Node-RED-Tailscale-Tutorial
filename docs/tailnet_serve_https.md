@@ -46,7 +46,7 @@ Execute the following command (on the device running Node-RED), to ***'serve'***
 tailscale serve --https=443 --bg --set-path /flow_editor http://localhost:1880/flow_editor
 ```
 Some explanation about the command line parameters:
-+ Listen to https requests on port 443, and start https connection (and as a result create and renew a LetsEncrypt certificate).  You could use any free port number, but port 443 is the default https port.  So you don't need to specify it in the address bar of your browser, which simplifies the flow editor url.  For example:
++ Listen to https requests on port 443, and start https connection (and as a result create and renew a LetsEncrypt certificate).  You could use any free port number, but port 443 is the default https port.  By using 443 you don't need to specify a port in the address bar of your browser, which simplifies the flow editor url.  For example:
    ```
    https://your-device-virtual-ip-address/flow_editor
    ```
