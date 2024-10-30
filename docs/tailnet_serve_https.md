@@ -23,10 +23,10 @@ There are a few reasons why you should setup a ***https*** connection through th
 + When web-push notifications are being used in the Node-RED dashboard, because modern browsers only allow such notifications when https is used (based on certificates signed by a trusted CA).
 + And so on ...
 
-Anyway it is quite convenient if you can use https all over the place, even within your home network (i.e. within your LAN).
+Anyway it is quite convenient if you can use https all over the place, even within your home network (i.e. within your LAN).  Further on we will also explain how your Tailscale agent can be use to provide https for your other local services, like e.g. the web interface of a timeseries database you are running...
 
 ## Enable https in your tailnet
-Previously we have activated DNS within our tailnet.  That is required to be able to use LetsEncrypt certificate, because the common name of the certificate should be the virtual hostname of your device.  It won't work for virtual ip addresses.
+Previously we have activated DNS within our tailnet.  That is required to be able to use a LetsEncrypt certificate, because the common name of the certificate should be the virtual hostname of your device.  It won't work for virtual ip addresses.
 
 In the tabsheet *"DNS"* of your Tailscale admin console, you can now enable once https for your entire tailnet:
 
@@ -73,17 +73,17 @@ Once the reverse proxy has been setup to use https, we can have a look at the ce
 
 1. Navigate to Node-RED in the browser:
    ```
-   https://your-machine-name.your-tailnet-name.ts.net:9123/dashboard
+   https://your-machine-name.your-tailnet-name.ts.net/flow_editor
    ```
 2. As soon as the browser shows in the address bar that the connection is safe, that already means that a valid LetsEncrypt certificate is being used.
 3. Depending on the browser, there will be a menu option available to show the certificate being used.  Via that way you should be able to see the LetsEncrypt certificate for your virtual hostname.  For example in Chrome:
 
-   ![image](https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/e9772288-9ddd-4168-9635-fa816ed9cdbd)
+   ![image](https://github.com/user-attachments/assets/7c557027-b404-4cab-9aec-9f309431db61)
 
 ## Behind the scenes
 It is ***not*** required to read this section.  This section explains in detail what happens behind the scenes if a local service is being served:
 
-![image](https://github.com/user-attachments/assets/b712d880-563d-4dbe-a921-f1cef4752df6)
+![image](https://github.com/user-attachments/assets/08b2d11e-5070-4587-a79f-73ad8d3b6d69)
 
 1. Execute the `tailscale serve ...` command, to configure the reverse proxy inside the Tailscale agent.
 2. The agent sends a request to the Tailscale Control servers, to get a LetsEncrypt certifcate (for the domain/hostname *"your-machine-name.your-tailnet-name.ts.net"*).
@@ -94,14 +94,15 @@ It is ***not*** required to read this section.  This section explains in detail 
 5. The Tailscale control servers forward the LetsEncrypt certificates to the Tailscale agent.
 6. The Tailscale agent will store the certificate in the */var/lib/tailscale/certs* directory (on Linux), next to the corresponding private key file.
 7. The Tailscale agent reverse proxy will load the LetsEncrypt certificate and private key, which it can use to setup SSL connections when a https request arrives.
-8. When you navigate in your browser to the virtual hostname of the Raspberry Pi (https://your-machine-name.your-tailnet-name.ts.net:9123/dashboard), the Tailscale agent on your smartphone will intercept that request.
+8. When you navigate in your browser to the virtual hostname of the Raspberry Pi, the Tailscale agent on your smartphone will intercept that request:
+   ```
+   https://your-virtual-device-name/flow_editor
+   ```
 9. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet. 
-10. The Tailscale agent listens to requests arriving via the Wireguard mesh network on port 4161 by default.  The agent will forward the https request to the port specified inside the request, in this case port 9123.
-11. The reverse proxy will now execute 3 tasks:
-     + Setup a https connection with the smartphone, based on the LetsEncrypt certificate.
-     + Do SSL termination (i.e. convert the https requests to http requests) because we have specified in our serve command that the target is http.
-     + Forward the http request to port 1880.  
-12. Finally the plain http request will be forwarded to Node-RED, which will show the dashboard.
+10. The Tailscale agent listens to requests arriving via the Wireguard mesh network on port 41641 by default.  The agent will forward the https request to the port specified inside the request, in this case port 443.
+11. The reverse proxy will now execute setup a https connection with the smartphone, based on the agent's LetsEncrypt certificate.  This involves ***SSL termination*** (i.e. convert the https requests to http requests), because we have specified in our serve command that the target is http.
+12.  The reverse proxy will forward the http request containing sub-path "*/flow_editor" to port 1880.
+12. Node-RED is listening for http requests arriving on port 1880, and will return the required flow editor resources to the browser.
 
 Since LetsEncrypt certificates only have a validity period of 3 months, the Tailscale agent will automatically ***renew*** these certificates periodically.  You can check that by looking at the date of the .crt file in the */var/lib/tailscale/certs* directory.
 
