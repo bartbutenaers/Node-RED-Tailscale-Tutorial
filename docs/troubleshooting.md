@@ -24,3 +24,11 @@ It was solved after I had cleared in Chrome the HSTS cache for my domain:
 1. Navigate to chrome://net-internals/#hsts.
 2. Enter your domain <your-virtual-hostname>.ts.net under “Delete domain security policies”.
 3. Click the “Delete” button.
+
+## Android loses connections
+
+My Node-RED dashboard was initially not accessible on my Android smartphone, until I opened the Tailscale app (and optionally switched the *"Connected"* off and on again.
+
+This was in my case solved by making sure that the Tailscale VPN connection is always open.  You can achieve that in your Android settings:
+
+![image](https://github.com/user-attachments/assets/9e277779-a721-4d57-ad93-68a932d2e90e)
