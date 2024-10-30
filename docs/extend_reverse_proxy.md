@@ -1,7 +1,7 @@
 # Extend the reverse proxy
 
 In the previous modules of this tutorial, we have setup the reverse proxy in the Tailscale agent to do a couple of things:
-+ Serve the Node-RED flow editor withing your tailnet (on port 443), which can be accessed like this:
++ Serve the Node-RED flow editor within your tailnet (on port 443), which can be accessed like this:
    ```
    https://<your-virtual-hostname>/flow_editor
    ```
@@ -25,11 +25,17 @@ As a result, the dashboard will be accessible via:
 ```
 https://<your-virtual-hostname>/dashboard
 ```
+Since Node-RED can only be accessed from your tailnet devices, you could consider to to remove basic authentication from Node-RED dashboard.  That way no login screen won't be displayed anymore, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the family.  This can be achieved by commenting following lines in your Node-RED settings.js file:
+```
+//httpNodeAuth: {user:"xxx",pass:"yyy"},
+//httpStaticAuth: {user:"xxx",pass:"yyy"},
+```
+***TODO: THIS ADVICE SHOULD BE REVIEWED TO SEE IF IT HAS BAD SIDE EFFECTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***
 
 ## Access other services
-As describe above, it is useful to make other services availble in your tailnet.  
+As describe above, it is useful to serve other local services via https in your tailnet.  
 
-CAUTION: in order to be able to make a service accessible via a sub-path, the service should support custom base url's.  Similar to how we have changed before the Node-RED `httpAdminRoot` setting.
+CAUTION: in order to be able to make a service accessible via a sub-path, the service software should support custom base url's.  Similar to how we have changed previously the `httpAdminRoot` setting in Node-RED.
 
 For example I can specify a custom base url for my VictoriaMetrics timeseries database, via a startup parameter:
 ```
@@ -60,5 +66,5 @@ https://<your-virtual-hostname>.<your-tailnet-name>.ts.net (tailnet only)
 https://<your-virtual-hostname>.<your-tailnet-name>.ts.net:8443 (Funnel on)
 |-- /google_home proxy http://localhost:3001
 ```
-Which can be summarize like this:
+Which can be summarized like this:
 ![image](https://github.com/user-attachments/assets/872779fb-350a-4709-9361-76329c92ab8c)
