@@ -20,7 +20,7 @@ Obviously when you would use Node-RED only offline, you could minimize the risk 
 + And so on...
 
 ## Security basics
-The following articles provice technical details about some of the terminology used in this repository.  It is ***NOT*** required to read this, but it will give you some background information about how stuff works behind the scenes.  
+The following articles provice technical details about some of the terminology used in this repository.  It is ***NOT*** required to read this, because it is rather heavy technical information.  But it will give you some background information about how stuff works behind the scenes.  
 
 + ***Basics of https***: explains why you need a private key and public key for https (see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/https_introduction.md)).
 + ***Basics of (LetsEncrypt) certificates***: explains why you need to create a (LetsEncrypt) certificate from your public key (see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/certificate_introduction.md)).
@@ -50,7 +50,7 @@ Some of those available third-party services also offer a limited free version, 
 Although these services are very decent and popular choices, they simply didn't match my *personal use case*:
 + Not enough free time to setup Cloudflare, although Cloudflare is better compared to Tailscale in many areas.
 + A setup with Cloudflare is too complex to explain to the familly how it works.
-+ To avoid setting up my own reverse proxy,  the networking service should offer one.
++ To avoid having to setup my own reverse proxy,  the networking service should offer a reverse proxy.
 + The security should be setup outside Node-RED, because the powers of Node-RED can be abused by hackers to disable its own security.  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should offer Letsencrypt certificates.
 
 Fortunately Tailscale is a service that offers all the security features that I need, which is why I started using it.
@@ -67,24 +67,6 @@ When you want to access your Node-RED dashboard (running on a Raspberry Pi) from
 
 You can read [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
 
-## Access control within Node-RED
-Since the access to Node-RED is restricted to the devices within your tailnet, there is *'less'* need to implement access control inside Node-RED yourself.  Of course some extra security will never be bad...
-
-Since Node-RED can only be accessed from your tailnet devices, you could consider to simplify your setup:
-+ Remove the logon screen from your Node-RED dashboard, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the family.  This can be achieved by commenting following lines in your Node-RED settings.js file:
-   ```
-   //httpNodeAuth: {user:"xxx",pass:"yyy"},
-   //httpStaticAuth: {user:"xxx",pass:"yyy"},
-   ```
-   ***TODO: THIS ADVICE SHOULD BE REVIEWED TO SEE IF IT HAS BAD SIDE EFFECTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***
-+ Keep the logon screen for the flow editor, to protect your flows with an extra protection.  Moreover probably not everybody in your familly will use the flow editor, and you won't use it as often as your dashboard.  Again can be done in the settings.js file:
-   ```
-   adminAuth: {
-      "type": "credentials",
-      "users": [ { "username": "zzz", "password": "xyz", "permissions": "*" } ]
-    },
-   ```
-
 ## Tailscale for Node-RED
 This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
 
@@ -92,7 +74,7 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 2. Optionally you might read about the Tailscale ***control*** servers, which distribute your tailnet information from your account to all your Tailscale agents: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_control.md).
 3. Setup your own ***tailnet***, by creating a Tailscale account and install Tailscale agents on your devices (which are added to your tailnet): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_setup.md).
 4. Specify a (virtual) logical hostname for each device within your tailnet (both for easy access and https), i.e. setup DNS in your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_dns.md).
-5. Get started by using plain http connections within your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/edit/main/docs/tailnet_plain_http.md).
+5. Configure Node-RED to allow it to be accessed using plain http connections within your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/edit/main/docs/tailnet_plain_http.md).
 6. Serve the Node-RED service via ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_serve_https.md).
 7. Setup a public tunnel (called ***funnel***) to allow third-party services to access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 8. Make some other local services available within your tailnet, to make sure you can access them even when you are not at home: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/tree/main/docs).
