@@ -38,22 +38,7 @@ You could also prefer to install your own ***reverse-proxy*** software locally t
 
 Such a reverse-proxy setup would become a tough nut to crack for a lot of Node-RED users.  Let the security experts from the third-party service do their job, while you have have time to do fun stuff with Node-RED meanwhile ;-)
 
-Some of those available third-party services also offer a limited free version, which will be most of the time sufficient for a simple home automation system.  The following table shows some well-known services with a limited free version:
-
-| Network service  | Advantages | Disadvantages |
-| ------------- | ------------- | ------------- |
-| ZeroTier  | Easy to setup  | No Letsencrypt certificates, no tunnels, ...  |
-| Cloudflare (Zero Trust)  | Lots of features  | Pretty complex to setup  |
-| Ngrok  | Very easy to setup  | No Letsencrypt certificates, limited traffic, ...  |
-| VPN  | Easy to setup  | No Letsencrypt certificates, limited traffic, ...  |
-
-Although these services are very decent and popular choices, they simply didn't match my *personal use case*:
-+ Not enough free time to setup Cloudflare, although Cloudflare is better compared to Tailscale in many areas.
-+ A setup with Cloudflare is too complex to explain to the familly how it works.
-+ To avoid having to setup my own reverse proxy,  the networking service should offer a reverse proxy.
-+ The security should be setup outside Node-RED, because the powers of Node-RED can be abused by hackers to disable its own security.  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should offer Letsencrypt certificates.
-
-Fortunately Tailscale is a service that offers all the security features that I need, which is why I started using it.
+I had a look at several third-party services, but at the end I decided that Tailscale was the best solution for my use case.  You can look [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/comparison.md) for a comparison of Tailscale with some other services.
 
 ## Introduction to Tailscale
 Tailscale allows you to create a ***virtual private network (VPN)*** between all your devices, as long as you have a Tailscale ***agent*** installed on all those devices.  In contradiction to a normal VPN, Tailscale offers a ***peer-to-peer mesh network*** which is called a ***tailnet***.  In other words instead of transferring all the data through a central server cluster (like most VPN services do), the data is communicated directly between devices in your tailnet.  Such direct connections between your devices offer multiple advantages:
