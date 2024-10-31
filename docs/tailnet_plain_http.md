@@ -47,10 +47,18 @@ node-red admin hash-pw
 Later on, we need to be able to run all applictions at their own base url.  So we need to fix this also for Node-RED.
 
 + The new Node-RED *dashboard* is by default available at base url `/dashboard`.  So that is ok already.
-+ The Node-RED *flow editor* is by default available at base url `/`.  You can specify a custom flow editor base url in the settings.js file (and restart Node-RED), for example:
-   ```
-   httpAdminRoot: '/flow_editor',
-   ```
++ The Node-RED *flow editor* is by default available at base url `/`, which means you can access it via the following url by default:
+  ```
+  http://your-device-virtual-ip-address:1880/
+  ```
+  You can however specify a custom flow editor base url path prefix in the settings.js file (and restart Node-RED), for example:
+  ```
+  httpAdminRoot: '/flow_editor',
+  ```
+  Then the Node-RED application will add this sub-path to every url, which allows us to make (all resources of) the flow editor to become available at:
+  ```
+  http://your-device-virtual-ip-address:1880/flow_editor/
+  ```
 
 ## Access the local services via http
 On every device in your tailnet, there might be one or more local services running (which are listening to a port).  For example the Node-RED service is listening by default to port 1880.
