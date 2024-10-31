@@ -101,7 +101,7 @@ A funnel is a weak point in your security.  Because it allows all clients from t
 
 Moreover since the funnels are accessible via a Tailscale `ts.net` subdomain, it is easier for bots and hackers to find it.  In case of Cloudflare tunnels you have to buy your onw domain name, which hides your tunnel more due to security by obscurity...
 
-Therefore it is really required to add some extra security to your local service:
+Since your network will only ever be as secure as the weakest secured endpoint, it is really required to add some extra security to local services that are public exposed:
 + Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
 + Make sure you have a ***https*** connection, based on a LetsEncrypt certificate (provided by the Tailscale agent)!  Otherwise it won't even be possible to setup a funnel.  The people from Tailscale have made this requirement, because - once your data leaves the encrypted funnel via the public endpoint - your data will be transported over the internet where hackers can intercept and read it.  You can achieve a https connection, via the `--https=8443` parameter in the command above.
 + It would be good to block malicious clients in the ***endpoint*** on the Tailscale Relay Funnel servers, because that is the entry point of all external traffic:
