@@ -25,7 +25,11 @@ As a result, the dashboard will be accessible via:
 ```
 https://<your-virtual-hostname>/dashboard
 ```
-Since Node-RED can only be accessed from your tailnet devices, you could consider to to remove basic authentication from Node-RED dashboard.  That way no login screen won't be displayed anymore, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the family.  This can be achieved by commenting following lines in your Node-RED settings.js file:
+Since Node-RED can only be accessed from your tailnet devices, you could consider to to remove basic authentication from Node-RED dashboard.  That way no login screen won't be displayed anymore, to improve the [WAF](https://en.wikipedia.org/wiki/Wife_acceptance_factor) factor of your home automation.  Because having to login over and over again can be rather annoying for the family.  Of courses for other use cases (for example in enterprise networks) it might be advised to keep on using the dashboard behind a login screen.
+
+I think we always have to consider the different use-cases people might want to cover so always worth making sure we scope the guidance accordingly.
+
+This can be achieved by commenting following lines in your Node-RED settings.js file:
 ```
 //httpNodeAuth: {user:"xxx",pass:"yyy"},
 //httpStaticAuth: {user:"xxx",pass:"yyy"},
