@@ -1,4 +1,4 @@
-# Secure Node-RED via Tailscale
+l# Secure Node-RED via Tailscale
 
 I created this repository to share my insights on setting up (free) security for a Node-RED system, more particular based on [Tailscale](https://tailscale.com/).  
 
@@ -8,7 +8,7 @@ This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend 
 
 Please read the ***disclaimer*** at the bottom of this readme page, before you get started!
 
-Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life to help users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [blog](https://it.knightnet.org.uk/) which contains lots of useful articles.
+Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life to help users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [website](https://www.totallyinformation.net/) which contains lots of useful articles.
 
 ## Issues and pull requests
 ***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  See the [contributing guide](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/contributing.md) how to make changes yourself.
