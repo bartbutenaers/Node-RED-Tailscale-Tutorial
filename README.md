@@ -6,7 +6,9 @@ After a lot of Node-RED systems had been hacked in 2023-2024, I decided to impro
 
 This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend to have a look at the Tailscale documentation (see [here](https://tailscale.com/kb/1017/install)) for more details.  They also offer some video tutorials on YouTube.
 
-Please read the ***disclaimer*** at the bottom of this readme page, before you get started!  
+Please read the ***disclaimer*** at the bottom of this readme page, before you get started!
+
+Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life to help users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [blog](https://it.knightnet.org.uk/) which contains lots of useful articles.
 
 ## Issues and pull requests
 ***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  
