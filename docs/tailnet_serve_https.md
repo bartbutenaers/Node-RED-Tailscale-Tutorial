@@ -64,8 +64,9 @@ Remarks:
 + Node-RED is also still accessible directly via http on port 1880.
 + It is absolutely required to specify a port number (e.g. 443), otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
 + Currently requests can only be forwarded by the reverse proxy to localhost, not to other hostnames.
-+ Via `tailscale serve reset` it is possible to remove all current serve's from the reverse proxy.
 + Via `tailscale serve status` you can get a list of all current serve's that have been setup, but it will also show all available funnels (which will be discussed later on).
++ Via `tailscale serve reset` it is possible to remove ***all*** the current routes from the reverse proxy.
++ Via `tailscale serve --https=443 --set-path /flow_editor off` you can remove a particular route, so simply specify which port and sub-path combination needs to be removed.  Which is more convenient (compared to reset) when you have a lot of routes specified in the reverse proxy, and you only want to remove a single one.
 + Via the above command we serve a local service via a reverse proxy, however it is also possible to serve files and static texts on your tailnet easily.  This is possible via respectively a file server and a static text server, which are available within the Tailscale agent (see Tailscale [documentation](https://tailscale.com/kb/1242/tailscale-serve)). 
 
 ## Check the certificate
