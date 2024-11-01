@@ -11,7 +11,7 @@ Please read the ***disclaimer*** at the bottom of this readme page, before you g
 Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life to help users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [blog](https://it.knightnet.org.uk/) which contains lots of useful articles.
 
 ## Issues and pull requests
-***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  
+***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  See the [contributing guide](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/contributing.md) how to make changes yourself.
 
 ***Issues*** can be used e.g. to mention if a part of the documentation is not correct or incomplete.  But when you have a Tailscale issue with your setup, post it directly in the Tailscale [repo](https://github.com/tailscale/tailscale/issues) or create a discussion in the Node-RED Discourse forum (where you can mention me to get my attention).  But ***DON'T***  post such issues in this repo, because I don't have the time to troubleshoot individual use cases!!!
 
