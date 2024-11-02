@@ -32,7 +32,7 @@ A hacker could create a CSR for a hostname from somebody else.  If a CA would si
 + LetsEncrypt on the other hand offers free certificates via a fully automated process:
    1. Your ***acme client*** software requests automatically (at regular time intervals) create a new certificate from LetsEncrypt.
    2. LetsEncrypt returns a small challenge file to the acme client.
-   3. The acme client needd to make that file available on your domain (via port 80 or via a DNS record) within N minutes.
+   3. The acme client needs to make that file available on your domain (via port 80 or via a DNS record) within N minutes.
    4. When LetsEncrypt can find that file within the specified time (on the website of that domain), they know you are owner of that domain (because only a root user can install a webserver to listen to port 80 or create DNS records).
    5. Then LetsEncrypt returns the certificate to the acme client, who can start using it to establish new https connections initiated by clients.
 
