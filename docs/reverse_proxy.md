@@ -42,7 +42,7 @@ From this we can conclude some rules of thumb:
 
 ## Forwarding rules
 
-The configuration of a reverse proy will contain a number of forward rules like this one (which we will setup later on via `tailscale funnel ...` and `tailscale serve ...` commands):
+The configuration of a reverse proxy will contain a number of forward rules like this one (which we will setup later on via `tailscale funnel ...` and `tailscale serve ...` commands):
 ```
 <source protocol> <source port> <source path> --> <target protocol>://<target port>:<destination path>
 ```
