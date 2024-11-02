@@ -6,7 +6,7 @@ Contributing to this tutorial is fairly easy:
 
    ![image](https://github.com/user-attachments/assets/475326dd-6a1b-42be-b029-241004213079)
 
-   If you had already create a fork of this repo in the past, you can bring it up-to-date with mine by clicking this button:
+   If you had already created a fork of this repo in the past, you can bring it up-to-date with mine by clicking this button:
 
    ![image](https://github.com/user-attachments/assets/55a66e12-1205-40e1-bcd8-79c1a2ad69cc)
 
