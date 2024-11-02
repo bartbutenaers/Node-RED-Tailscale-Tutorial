@@ -61,6 +61,8 @@ Some explanation about the command line parameters:
 Via the above command you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 443 via a https server, and forward these as http requests to port 1880 on localhost.  The local (Node-RED) service will now become this way ***only accessible within the tailnet*** via https.
 
 Remarks:
++ For enhanced security you might consider not to serve the Node-RED flow editor at all within your tailnet, in case hackers should get access to your tailnet somehow.  But of course then you only can access it directly via the physical ip address or hostname of your device.
++ For enhanced security you might consider to serve the Node-RED flow editor at a random choosen high port number (e.g. 47832) within your tailnet.  Such ports are very unpredictable and can reduce the risk of automated attacks, in case hackers should get access to your tailnet somehow.   High port numbers can reach up to 65535, and can offer security by obscurity.
 + Node-RED is also still accessible directly via http on port 1880.
 + It is absolutely required to specify a port number (e.g. 443), otherwise you cannot combine 'serve' and 'funnel' (see my [issue](https://github.com/tailscale/tailscale/issues/11009#issuecomment-2267159080)).
 + Currently requests can only be forwarded by the reverse proxy to localhost, not to other hostnames.
