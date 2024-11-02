@@ -4,7 +4,7 @@ During the SSL/TLS handshake between a client and a server, the server will shar
 
 ## Why do we need certificates
 
-The client needs to make sure that the public key is being send by the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept the client's https request to the server, and return his own fake public key of his own server.  In that case the client would setup - without knowing - a secure https connection to the hacker's server.  And then the hacker can decrypt and read all the condifidential data send by the client (via its private key):
+The client needs to make sure that the public key is being sent by the real server (in our case the server where Node-RED is running)?  Because a hacker could intercept the client's https request to the server, and return his own fake public key of his own server.  In that case the client would setup - without knowing - a secure https connection to the hacker's server.  And then the hacker can decrypt and read all the condifidential data send by the client (via its private key):
 
 ![image](https://github.com/user-attachments/assets/9e5f3009-70a0-4c6d-8f93-33af29867d81)
 
@@ -23,26 +23,26 @@ This can only be solved to add some information to our server's public key, whic
 3. The CA returns the certificate to the server.  That certificate contains of a couple of things:
    + The public key.
    + Metadata about the server (a.o. the ‘common name’ which is the hostname of the server).
-   + Signing information about the CA
+   + Signing information about the CA.
 
 ## Requestor of CSR should own the domain
 
 A hacker could create a CSR for a hostname from somebody else.  If a CA would sign such a request, then the hacker would own a certificate for a server that is owned by somebody else.  However the CA will always check whether the requestor of a certificate is also the real owner of that domain:
-+ Most CA’s (GlobalSign, Verisign, …) use a manual process to check this.  They will require that the CSR is being mailed from a special administrator related email adres in the same domain as the server (e.g. admin@same_domain.com), because then they are pretty sure that the certificate requestor owns that domain.  Because a hacker can not easily create an admin email account on a company's mail server.
-+ LetsEncrypt on the other hand offers free certificates via a fully automated proces:
-   1. Your ***acme client*** software requests automatically (at regular time intervals) a new certificate from LetsEncrypt.
++ Most CA’s (GlobalSign, Verisign, …) use a manual process to check this.  They will require that the CSR is being mailed from a special administrator related email address in the same domain as the server (e.g. admin@same_domain.com), because then they are pretty sure that the certificate requestor owns that domain.  Because a hacker can not easily create an admin email account on a company's mail server.
++ LetsEncrypt on the other hand offers free certificates via a fully automated process:
+   1. Your ***acme client*** software requests automatically (at regular time intervals) create a new certificate from LetsEncrypt.
    2. LetsEncrypt returns a small challenge file to the acme client.
-   3. The acme client need to make that file available on your domain (via port 80 or via a DNS record) within N minutes.
+   3. The acme client needs to make that file available on your domain (via port 80 or via a DNS record) within N minutes.
    4. When LetsEncrypt can find that file within the specified time (on the website of that domain), they know you are owner of that domain (because only a root user can install a webserver to listen to port 80 or create DNS records).
    5. Then LetsEncrypt returns the certificate to the acme client, who can start using it to establish new https connections initiated by clients.
 
 ## Self-signed certificates
 
-A hacker could of course sign his own certificate (pretending to be some kind of CA) containing our hostname (as common name).  However when he sends a CSR to a trusted CA, they will check whether the requestor of the certificate owns the domain/hostname (which is specified int the request).  Since the hacker has no root access to our domain, he cannot prove that he owns the domain.  Because the CA will reject the CSR, the hacker can only sign his certificate by himself.  But then he ends up with a ***self-signed certificate***, which are not considered secure by most clients (e.g. browsers, NodeJs, ...).  In other words decent https client software will reject such self signed certificates, because such clients will execute ***3 checks*** when a certificate arrives (during setup of a https connection):
+A hacker could of course sign his own certificate (pretending to be some kind of CA) containing our hostname (as common name).  However when he sends a CSR to a trusted CA, they will check whether the requestor of the certificate owns the domain/hostname (which is specified in the request).  Since the hacker has no root access to our domain, he cannot prove that he owns the domain.  Because the CA will reject the CSR, the hacker can only sign his certificate by himself.  But then he ends up with a ***self-signed certificate***, which are not considered secure by most clients (e.g. browsers, NodeJs, ...).  In other words decent https client software will reject such self signed certificates, because such clients will execute ***3 checks*** when a certificate arrives (during setup of a https connection):
 + Is the validity period of the certificate not passed yet.
 + Does the common name in the certificate match with the hostname in the url, i.e. the hostname to which we have send this request.
 + Has the certificate being signed by one of a list of trusted CA's (GlobalSign, Verisign, LetsEncrypt, ...).
 
-For example browsers will inform you that the certificate is not valid, in this case because the common name in the certificate does not match with the hostname you have entered in the address bar (i.e. inside the url):
+For example, browsers will inform you that the certificate is not valid, in this case because the common name in the certificate does not match with the hostname you have entered in the address bar (i.e. inside the url):
 
 ![image](https://github.com/user-attachments/assets/a15a8016-ebb7-4715-a3b8-e71b304fd489)

@@ -19,7 +19,7 @@ In order to be able to access those ports also from the internet (WAN), you need
 
 This setup is very easy and works fine: you can access your Node-RED web application with your browser, and you can send voice commands to Node-RED with your Google Home device.
 
-## Riscs of port forwarding
+## Risks of port forwarding
 
 As soon as a port has been opened on your modem/router, malicious bots will start scanning these ports within minutes.  Once an open port has been detected by these bots, hackers will know about it and have direct access to your Node-RED logon screen.
 

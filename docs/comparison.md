@@ -13,7 +13,7 @@ Remark: while most of these services have *"no certificate management"* included
 
 Although these services are very decent and popular choices, they simply didn't match my *personal use case*:
 + Not enough free time to setup Cloudflare, although Cloudflare is better compared to Tailscale in many areas.
-+ A setup with Cloudflare is too complex to explain to the familly how it works.
++ A setup with Cloudflare is too complex to explain to the family how it works.
 + To avoid having to setup my own reverse proxy,  the networking service should offer a reverse proxy.
 + The security should be setup outside Node-RED, because the powers of Node-RED can be abused by hackers to disable its own security.  For example I don't want to use my own [node-red-contrib-letsencrypt](https://github.com/bartbutenaers/node-red-contrib-letsencrypt) node anymore!  The network service should offer Letsencrypt certificates.
 
