@@ -28,6 +28,13 @@ It might sound very unsecure to turn off https in Node-RED, but we have a few re
 
 Setting up https in the Tailscale agent will be described later on in this tutorial.
 
+## Port number
+By default the Node-RED web server is listening to port 1880, as specified in the settings.js file:
+```
+uiPort: process.env.PORT || 1880,
+````
+For enhanced security you might consider to serve the Node-RED flow editor at a random choosen high port number (e.g. 47832).  Such ports are very unpredictable and can reduce the risk of automated attacks, in case hackers should get access to your tailnet somehow.   High port numbers can reach up to 65535, and can offer security by obscurity.
+
 ## Basic authentication
 Because only devices from your tailnet will be able to connect to your Node-RED system, you could turn off basic authentication in Node-RED.  However since Node-RED is a rather critical system in your home automation, it might still be better to enable basic authentication.  That way it is required to enter username and password in the logon screen, as an extra layer of protection.
 
@@ -38,10 +45,12 @@ adminAuth: {
    "users": [ { "username": "zzz", "password": "xyz", "permissions": "*" } ]
 },
 ```
-Note that the password needs to be hashed, before entering it in the above file.  You can do that using following [command](https://nodered.org/docs/user-guide/runtime/securing-node-red#generating-the-password-hash):
-```
-node-red admin hash-pw
-```
+Remarks:
++ The password needs to be hashed, before entering it in the above file.  You can do that using following [command](https://nodered.org/docs/user-guide/runtime/securing-node-red#generating-the-password-hash):
+   ```
+   node-red admin hash-pw
+   ```
++ For enhanced security it would be better to do authentication in a specialized tool before Node-RED, instead of inside a generic application like Node-RED.  Unfortunately it is currently ***not*** possible to do this inside the Tailscale agent.  I have created a [feature request](https://github.com/tailscale/tailscale/issues/14000) for that.
 
 ## Setup a base url
 Later on, we need to be able to run all applictions at their own base url.  So we need to fix this also for Node-RED.
