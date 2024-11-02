@@ -1,14 +1,14 @@
-l# Secure Node-RED via Tailscale
+# Secure Node-RED via Tailscale
 
 I created this repository to share my insights on setting up (free) security for a Node-RED system, more particular based on [Tailscale](https://tailscale.com/).  
 
 After a lot of Node-RED systems had been hacked in 2023-2024, I decided to improve my own Node-RED security setup.  I especially wanted to get rid of my old port-forwarding setup, since most of the hacked Node-RED systems had a similar setup like mine.  We will discuss further on why ***port-forwarding should be avoided!***
 
-This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend to have a look at the Tailscale documentation (see [here](https://tailscale.com/kb/1017/install)) for more details.  They also offer some video tutorials on YouTube.
+This tutorial only teaches you the basics of Tailscale.  Afterwards I recommend you to have a look at the Tailscale documentation (see [here](https://tailscale.com/kb/1017/install)) for more details.  They also offer some video tutorials on YouTube.
 
 Please read the ***disclaimer*** at the bottom of this readme page, before you get started!
 
-Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life to help users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [website](https://www.totallyinformation.net/) which contains lots of useful articles.
+Thanks to [Julian Knight](https://github.com/TotallyInformation) who devoted a part of his life helping users to keep their Node-RED systems secure.  He teached me a lot about security, and was so kind to review this tutorial!  Have a look at his [website](https://www.totallyinformation.net/) which contains lots of useful articles.
 
 ## Issues and pull requests
 ***Pull-requests*** are very welcome, to help improving the information in this tutorial.   That is the only way we can help each other to improve our Node-RED security.  See the [contributing guide](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/contributing.md) how to make changes yourself.
@@ -55,7 +55,7 @@ When you want to access your Node-RED dashboard (running on a Raspberry Pi) from
 You can read [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/port_forwarding.md) why port forwarding should be avoided, and how Tailscale can work without port forwarding.
 
 ## Tailscale for Node-RED
-This tutorial describes in detail how to get started with Tailscale.  The information is splitted in separate pages, to keep this readme compact and readable.
+This tutorial describes in detail how to get started with Tailscale.  The information is split into separate pages, to keep this readme compact and readable.
 
 1. Optionally you might read about the Tailscale ***relay*** servers.  These servers will be used to connect two Tailscale agents, in case a direct connections cannot be setup: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_relay.md).
 2. Optionally you might read about the Tailscale ***control*** servers, which distribute your tailnet information from your account to all your Tailscale agents: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_control.md).
@@ -63,7 +63,7 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 4. Specify a (virtual) logical hostname for each device within your tailnet (both for easy access and https), i.e. setup DNS in your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_dns.md).
 5. Configure Node-RED to allow it to be accessed from the tailnet, using plain http connections within your tailnet: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/edit/main/docs/tailnet_plain_http.md).
 6. Optionally you might read about how ***reverse proxies*** work, to understand better the sub-path routing that we are going to use: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/reverse_proxy.md).
-7. Serve Node-RED als a local service via ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_serve_https.md).
+7. Serve Node-RED as a local service via ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_serve_https.md).
 8. Setup a public tunnel (called ***funnel***) to allow third-party services to access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
 9. Make some other local services available within your tailnet, to make sure you can access them even when you are not at home: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/tree/main/docs).
 10. Finally specify which devices are allowed to communicate with each other (within your tailnet), using Access Control Lists (ACL): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_access_control.md).
