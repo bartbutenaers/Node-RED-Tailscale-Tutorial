@@ -60,6 +60,8 @@ Later on, we need to be able to run all applictions at their own base url.  So w
   http://your-device-virtual-ip-address:1880/flow_editor/
   ```
 
+In this case we have used a self-explaining sub-path *"flow_editor"*, but for enhanced security you could a stronger one.  For example including numbers and special characters, because that makes it harder to guess for hackers.  In other words security by obscurity.  But of course that would only be useful in case hackes manage to get access to your tailnet somehow...
+
 ## Access the local services via http
 On every device in your tailnet, there might be one or more local services running (which are listening to a port).  For example the Node-RED service is listening by default to port 1880.
 
