@@ -11,7 +11,7 @@ You need to create a Tailscale account once:
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/d69b5d6e-f469-48e1-bf60-d32e7d73b23b" width="300">
 
    Select a provider from this list, for which you have already an existing account.
-5. You will be redirected to the webpage of the selected identity provider, where you need to log in (using the your credentials for that provider).  For example Github:
+5. You will be redirected to the webpage of the selected identity provider, where you need to log in (using your credentials for that provider).  For example Github:
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/8bcdd254-a80c-4bbf-ad33-cfd255373e5d" width="300">
 
@@ -32,16 +32,16 @@ Tailscale agents can be installed on various platforms.  Since a tailnet needs m
    2. When opening the Tailscale app for the first time, you need to authorize it (to your tailnet) by logging into your identity provider again and authorize Tailscale. 
    3. Based on your identity provider account, the agent app knows to which Tailscale account it belongs.  That way, the Tailscale agent on your smartphone will be added automatically to your tailnet.
 
-2.	Install a second Tailscale agent for example on a ***Windows 10 portable*** (see instructions [here](https://tailscale.com/download/windows)) and again authorized it via your identity provider.
+2.	Install a second Tailscale agent for example on a ***Windows 10 portable*** (see instructions [here](https://tailscale.com/download/windows)) and again authorize it via your identity provider.
 
-3.	And at last install a third Tailscale agent on your Raspberry Pi running Node-RED (see ‘manual’ instructions [here](https://tailscale.com/download/linux/rpi) or specific for the Bookworm version [here](https://pkgs.tailscale.com/stable/#raspbian-bookworm)).  This agent will run as a systemd daemon named *"tailescaled"*.
+3.	And finally, install a third Tailscale agent on your Raspberry Pi running Node-RED (see ‘manual’ instructions [here](https://tailscale.com/download/linux/rpi) or specific for the Bookworm version [here](https://pkgs.tailscale.com/stable/#raspbian-bookworm)).  This agent will run as a systemd daemon named *"tailescaled"*.
   
     Remark: after you executed the command `sudo tailscale up`, an authorization url will be displayed in the console.  Paste that url in a browser on any device, and once it is authenticated in your tailnet, the text 'Success' will appear in your command line:
 
     <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/b66a4b4a-fcd7-44ec-87a9-38bfd31c8994" width="800">
 
 ## Show the tailnet devices
-Now that you hace added some devices to your tailnet, you can have a first look at your virtual network:
+Now that you have added some devices to your tailnet, you can have a first look at your virtual network:
 
 1. Logon to the ***admin console*** on the Tailscale Control servers (via https://login.tailscale.com/start):
    
