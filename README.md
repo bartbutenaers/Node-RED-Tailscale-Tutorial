@@ -65,7 +65,7 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 6. Optionally you might read about how ***reverse proxies*** work, to understand better the sub-path routing that we are going to use: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/reverse_proxy.md).
 7. Serve Node-RED as a local service via ***https***, based on LetsEncrypt certificates: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailnet_serve_https.md).
 8. Setup a public tunnel (called ***funnel***) to allow third-party services to access Node-RED, for example for Google Assistant: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_funnel.md).
-9. Make some other local services available within your tailnet, to make sure you can access them even when you are not at home: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/tree/main/docs).
+9. Make some other local services available within your tailnet, to make sure you can access them even when you are not at home: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/extend_reverse_proxy.md).
 10. Finally specify which devices are allowed to communicate with each other (within your tailnet), using Access Control Lists (ACL): see [here](https://github.com/bartbutenaers/Node-RED-Tailscale/blob/main/docs/tailscale_access_control.md).
 
 ## Troubleshooting
