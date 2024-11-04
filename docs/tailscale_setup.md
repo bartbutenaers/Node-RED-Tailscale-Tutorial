@@ -10,7 +10,11 @@ You need to create a Tailscale account once:
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/d69b5d6e-f469-48e1-bf60-d32e7d73b23b" width="300">
 
-   Select a provider from this list, for which you have already an existing account.
+   Remarks:
+   + Select any provider from this list, for which you have an account already.  For example if you have a Google account (GMail etc), select Google. Google with then ask you if want to do this, and they will then verify your ID with Tailscale.
+   + All the providers in the list will be able to provide Tailscale with information about your identitiy.  Because in one of the steps below you will tell your identitiy provider that they are allowed to share some identity information about you to Tailscale (e.g. your email address).
+   + Since your Tailscale account will be linked to your provider account, always use the same provider when loggin in afterwards (in case you have existing accounts with these providers).  Otherwise you will get an error that there is ***no*** Tailscale account linked to your other provider account. 
+
 5. You will be redirected to the webpage of the selected identity provider, where you need to log in (using the your credentials for that provider).  For example Github:
 
    <img src="https://github.com/bartbutenaers/Node-RED-security-basics/assets/14224149/8bcdd254-a80c-4bbf-ad33-cfd255373e5d" width="300">
