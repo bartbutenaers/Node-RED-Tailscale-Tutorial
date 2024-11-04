@@ -36,7 +36,9 @@ uiPort: process.env.PORT || 1880,
 For enhanced security you might consider to serve the Node-RED flow editor at a random choosen high port number (e.g. 47832).  Such ports are very unpredictable and can reduce the risk of automated attacks, in case hackers should get access to your tailnet somehow.   High port numbers can reach up to 65535, and can offer security by obscurity.
 
 ## Basic authentication
-Because only devices from your tailnet will be able to connect to your Node-RED system, you could turn off basic authentication in Node-RED.  However since Node-RED is a rather critical system in your home automation, it might still be better to enable basic authentication.  That way it is required to enter username and password in the logon screen, as an extra layer of protection.
+Because only devices from your tailnet will be able to connect to your Node-RED system, you could turn off basic authentication in Node-RED.  However since Node-RED is a rather critical system in your home automation, it might still be better to enable basic authentication.  That way it is required to enter username and password in the logon screen, as an extra layer of protection.  For example if one of the devices in your tailnet would get hacked, they could gain access via your tailnet to the Node-RED flow editor.
+
+For example when you loose your smartphone (running a Tailscale agent) and a malicious user can login to it, then he gets access to your tailnet.
 
 Basic authentication can be configured in the Node-RED settings.js file:
 ```
