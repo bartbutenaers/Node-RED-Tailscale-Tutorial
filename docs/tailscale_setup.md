@@ -13,7 +13,8 @@ You need to create a Tailscale account once:
    Remarks:
    + Select any provider from this list, for which you have an account already.  For example if you have a Google account (GMail etc), select Google. Google with then ask you if want to do this, and they will then verify your ID with Tailscale.
    + All the providers in the list will be able to provide Tailscale with information about your identitiy.  Because in one of the steps below you will tell your identitiy provider that they are allowed to share some identity information about you to Tailscale (e.g. your email address).
-   + Since your Tailscale account will be linked to your provider account, always use the same provider when loggin in afterwards (in case you have existing accounts with these providers).  Otherwise you will get an error that there is ***no*** Tailscale account linked to your other provider account. 
+   + Since your Tailscale account will be linked to your provider account, always use the same provider when loggin in afterwards (in case you have existing accounts with these providers).  Otherwise you will get an error that there is ***no*** Tailscale account linked to your other provider account.
+   + The identity provider gets ***no*** access to your tailnet, to your data or anything else.  The other way around, Tailscale will get only access to very ***limited*** data from your identity provider.  In step 7 you will see which data Tailscale wants to read from your identity provider (typical your email address), which you will then have to accept or reject.
 
 5. You will be redirected to the webpage of the selected identity provider, where you need to log in (using the your credentials for that provider).  For example Github:
 
