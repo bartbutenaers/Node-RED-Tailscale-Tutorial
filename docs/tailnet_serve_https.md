@@ -6,7 +6,7 @@ In this section, we will start using https connections again! But as explained b
 ## Tailnet: what goes in, will come out
 It is ***not*** required to read this section.
 
-The data between the Tailscale agents in your tailnet is already encrypted, using the Wireguard protocol used in the mesh network.  As a result all you data will be send in a secure way between your virtual devices in your tailnet, across the internet.  Which means it is already safe enough to access Node-RED via *plain http*, since all data is exchanged within your secure tailnet.
+The data between the Tailscale agents in your tailnet is already encrypted, using the Wireguard protocol used in the mesh network.  As a result, all you data will be send in a secure way between your virtual devices in your tailnet, across the internet.  Which means it is already safe enough to access Node-RED via *plain http*, since all data is exchanged within your secure tailnet.
 
 However it is still very useful to activate https, because the ***data is only encrypted between the Tailscale agents***!  Data that you send into a Tailscale agent will be encrypted by that agent, and the data will afterwards be decrypted by the other agent that receives that encrypted data.  As a result if you send unencrypted data (via a plain http connection) into your tailnet, it will leave your tailnet unencrypted.  What goes in will come out..
 
@@ -103,7 +103,7 @@ It is ***not*** required to read this section.  This section explains in detail 
    ```
 9. The DNS resolver of the agent will detect that it is a virtual Tailscale ip address or hostname, so it will forward the request to the Tailscale agent (on the Raspberry Pi) in your tailnet. 
 10. The Tailscale agent listens to requests arriving via the Wireguard mesh network on port 41641 by default.  The agent will forward the https request to the port specified inside the request, in this case port 443.
-11. The reverse proxy will now execute setup a https connection with the smartphone, based on the agent's LetsEncrypt certificate.  This involves ***SSL termination*** (i.e. convert the https requests to http requests), because we have specified in our serve command that the target is http.
+11. The reverse proxy will now setup a https connection with the smartphone, based on the agent's LetsEncrypt certificate.  This involves ***SSL termination*** (i.e. convert the https requests to http requests), because we have specified in our serve command that the target is http.
 12.  The reverse proxy will forward the http request containing sub-path "*/flow_editor" to port 1880.
 12. Node-RED is listening for http requests arriving on port 1880, and will return the required flow editor resources to the browser.
 
@@ -114,6 +114,6 @@ Note that there are two kind of connections being used:
 + A https connection between the browser and the Tailscale agent on the Raspberry.  
 + A plain http connection between the agent and Node-RED.
 
-It would be quite useles to setup a second https connection between the Tailscale agent (on the Raspberry) and Node-RED, because:
+It would be quite useless to setup a second https connection between the Tailscale agent (on the Raspberry) and Node-RED, because:
 + All the data traffic stays inside your own Raspberry.
 + If you have setup in the past https in Node-RED using a self-signed certificate, the Tailscale agent might even refuse to connect to Node-RED, because it doesn't trust that certificate.

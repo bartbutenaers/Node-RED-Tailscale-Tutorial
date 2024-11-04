@@ -2,7 +2,8 @@
 
 Via ACL (Access Control Lists) you can specify which resources can be accessed within your tailnet.  It is quite a large topic in the Tailscale documention, so we will not go into too much detail here.
 
-Let's stick to a simple example.  You have 1 server (i.e. your Raspberry running Node-RED) and multiple clients (i.e. Android smartphones, Windows 10 portable, ...).  You want the clients to be able to access the server, but the clients should not be able to access each other.  That way you can minimize risks within your tailnet, in case one the device would be infected (before you could remove it from your tailnet).
+Let's stick to a simple example;  
+You have 1 server (i.e. your Raspberry running Node-RED) and multiple clients (i.e. Android smartphones, Windows 10 portable, ...).  You want the clients to be able to access the server, but the clients should not be able to access each other.  That way you can minimize risks within your tailnet, in case one the device would be infected (before you could remove it from your tailnet).
 
 1. Login to the admin console (https://login.tailscale.com/login).
 2. Create 2 custom tags for servers and clients:

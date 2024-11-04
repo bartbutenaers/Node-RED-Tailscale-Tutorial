@@ -3,7 +3,7 @@ Tailscale offers a worldwide cluster of control servers which perform multiple t
 + They offer a ***DHCP server*** to assign virtual IP addresses (100.x.y.z) to new Tailscale agents in your tailnet.
 + They host the ***admin console***, which is a web interface that you can use to manage your tailnet: your devices, users, access control list, ...  The admin console is accessible via https://login.tailscale.com/start  
    Note: Every time you want to access the admin console, you will need to authenticate yourself via your preferred identity provider (Google, Microsoft, Github, ...).
-+ The offer a ***DNS server*** to assign virtual hostnames to Tailscale agents in your tailnet.
++ They offer a ***DNS server*** to assign virtual hostnames to Tailscale agents in your tailnet.
 + They store the public ***LetsEncrypt certificates*** for all Tailnet agents, and distribute those certificates to all the agents in your tailnet.
 + And so on...
 

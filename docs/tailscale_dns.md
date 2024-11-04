@@ -1,7 +1,7 @@
 # Configure DNS in your tailnet
 When you have added devices to your tailnet, each device will get a virtual IP address 10.x.y.z from the DHCP server in the Tailscale control servers.  
 
-However it is adviced to activate DNS, because adressing devices using host names has some advantages:
+However it is advised to activate DNS, because addressing devices using host names has some advantages:
 + Host names are easier to remember compared to IP addresses.
 + It is not possible to setup secure https without hostnames, because LetsEncrypt certificates cannot be requested for IP addresses (as common name).
 

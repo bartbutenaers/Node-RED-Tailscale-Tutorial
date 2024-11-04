@@ -1,10 +1,10 @@
 # Tailscale funnel
 
-A funnel is a public tunnel that can be used to make a local service public available on the internet, which means outside your tailnet.  Requests that are arriving through the funnel, will ***not*** have access to other services within your tailnet.
+A funnel is a public tunnel that lets you make a local service accessible on the internet., which means outside your tailnet.  Requests that are arriving through the funnel, will ***not*** have access to other services within your tailnet.
 
 For example port 3001 of the node-red-contrib-google-smarthome node needs to become public available on the internet, to make sure the Google servers can connect to that port for sending voice comands.  But since we have previously deactivated all port forwardings, you won't be able to access that port anymore remotely (since all ports on your modem/router/firewall are now closed).
 
-Once a funnel has been setup, you will be able to access your local service via an url that contains a subdomain of the Tailscale `*.ts.net` root domain (`https://<your_virtual_host_name>.<your_tailnet_name>.ts.net`).  Such an url is free, unlike Cloudflare tunnels that require you to buy your own domain name (at a yearly cost).
+Once a funnel is set up, you can access your local service through a URL that includes a subdomain of the Tailscale *.ts.net root domain. (`https://<your_virtual_host_name>.<your_tailnet_name>.ts.net`).  This URL is free, unlike Cloudflare tunnels, which require you to purchase your own domain name (with an annual cost)..
 
 ## Setup a funnel
 ***CAUTION:*** See security section below BEFORE you setup a funnel!!
@@ -99,7 +99,7 @@ As you can see, the output does also show the local services which are available
 ## Security
 A funnel is a weak point in your security.  Because it allows all clients from the internet to access your local service, i.e. client devices which are ***not*** members of your tailnet.  Which means that even hackers and bots can access it, and hack the local service.
 
-Moreover since the funnels are accessible via a Tailscale `ts.net` subdomain, it is easier for bots and hackers to find it.  In case of Cloudflare tunnels you have to buy your onw domain name, which hides your tunnel more due to security by obscurity...
+Moreover since the funnels are accessible via a Tailscale `ts.net` subdomain, it is easier for bots and hackers to find it.  In case of Cloudflare tunnels you have to buy your own domain name, which hides your tunnel more due to 'security by obscurity...'
 
 Since your network will only ever be as secure as the weakest secured endpoint, it is really required to add some extra security to local services that are public exposed:
 + Make sure that you have setup ***secure login*** to your local service, before you make it public available through a tunnel!  A minimal secure access would be login via username and password credentials.  For example the node-red-contrib-google-smarthome node uses OAuth2 to secure access to it.
@@ -110,7 +110,7 @@ Since your network will only ever be as secure as the weakest secured endpoint, 
    + Rate limiting to prevent DDOS attacks: limit the number of messages that can be send to your local service.
    + ...
 
-   Cloudflare tunnels allow such kind of security, however unfortunately ***Tailscale funnels don't***.  I have registered a [feature request](https://github.com/tailscale/tailscale/issues/13809) for filtering control options in the Access Control list, and their lead developer was positive about the suggestion.  But currently there is nothing available, so malicious clients can access your server (e.g. Raspberry Pi) and you need to block them over there.
+   Cloudflare tunnels allow such kind of security, however unfortunately ***Tailscale funnels doesn't***.  I have registered a [feature request](https://github.com/tailscale/tailscale/issues/13809) for filtering control options in the Access Control list, and their lead developer was positive about the suggestion.  But currently there is nothing available, so malicious clients can access your server (e.g. Raspberry Pi) and you need to block them over there.
 + Install an ***extra reverse proxy*** (e.g. Caddy, NGinx, ...) in between the Tailscale agent and your local service.  Of course then you have 2 reverse proxies in series, which will make the setup again a bit more complex.
 + Add some ***firewall rules*** e.g. in iptables on Raspberry e.g. for rate limiting to limit the effect of DDOS attacks:
    ```

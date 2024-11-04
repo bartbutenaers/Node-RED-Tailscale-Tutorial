@@ -22,7 +22,7 @@ When you have previously setup https in Node-RED, it is advised to turn it off. 
 Of course all other stuff related to this (e.g. my node-red-contrib-letsencrypt node) can also be removed.
 
 It might sound very unsecure to turn off https in Node-RED, but we have a few reasons to do this:
-+ It is not advised to setup security *inside* the (Node-RED) application, because then it can be turned of when a malafide user gains access to the application.  Instead take care of this *before* the application, i.e. in the Tailscale agent.
++ It is not advised to setup security *inside* the (Node-RED) application, because then it can be turned of when a mala fide user gains access to the application.  Instead take care of this *before* the application, i.e. in the Tailscale agent.
 + Lots of users use *self-signed certificates* which cause a lot of troubles, while the Tailscale agent offers LetsEncrypt certificates.
 + Having to setup https in every application results in a rather complex system, while it is easier to maintain when the Tailscale agent can offer this to all applications on the same host.
 
