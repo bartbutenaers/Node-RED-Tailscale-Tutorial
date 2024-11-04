@@ -76,3 +76,8 @@ When a device is registered, it will join your tailnet automatically.  But you c
 
 4. Click on the `...` button for the new device, and click on the *"Approve"* menu item.
 5. Now the new device will join your tailnet.
+
+## Remove devices
+When a device from your tailnet is lost or stolen, it is advised to remove it immediately from you tailnet.  Because once a malicious user gets access to the device, he can access all devices on your tailnet.  You can remove the device from the tailnet, via the context menu when clicking on the *"..."* button:
+
+![image](https://github.com/user-attachments/assets/ca701485-411e-4b4f-af4f-9ddbaada4721)
