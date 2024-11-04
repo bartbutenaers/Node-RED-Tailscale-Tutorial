@@ -11,7 +11,7 @@ Once a funnel is set up, you can access your local service through a URL that in
 
 Such a funnel can be setup like this:
 
-1. Make sure the local service (which we will make available public soon) does not use https, but ***plain http***.  Because lie before (when serving a local service within your tailnet), the reverse proxy in the Tailscale agent will be responsible for setting up https connections.
+1. Make sure the local service (which we will make available public soon) does not use https, but ***plain http***.  Because like we did before (when serving a local service within your tailnet), the reverse proxy in the Tailscale agent will be responsible for setting up https connections.
 
    For example the node-red-contrib-google-smarthome node can be configured to use plain http, by specifying explicit that SSL will be taken care of in another tool:
 
