@@ -46,7 +46,7 @@ Execute the following command (on the device running Node-RED), to ***'serve'***
 tailscale serve --https=443 --bg --set-path /flow_editor http://localhost:1880/flow_editor
 ```
 Some explanation about the command line parameters:
-+ Listen to https requests on port 443, and start https connection (and as a result create and renew a LetsEncrypt certificate).  You could use any free port number, but port 443 is the default https port.  By using 443 you don't need to specify a port in the address bar of your browser, which simplifies the flow editor url.  For example:
++ Listen to ***https*** requests on port 443, and start https connection (and as a result create and renew a LetsEncrypt certificate).  You could use any free port number, but port 443 is the default https port.  By using 443 you don't need to specify a port in the address bar of your browser, which simplifies the flow editor url.  For example:
    ```
    https://your-device-virtual-ip-address/flow_editor
    ```
@@ -56,9 +56,13 @@ Some explanation about the command line parameters:
    ```
 + Run as a background (bg) job, to make sure the serving keeps running when the command shell window is closed.
 + The httpAdminRoot path is used here `/flow_editor` (from the settings.js file).
-+ All requests will be forwarded to port 1880 on localhost (sub-path 'flow_editor'), to which Node-RED is listening (to plain http connections).
++ All requests will be forwarded to port 1880 on localhost (sub-path 'flow_editor'), to which Node-RED is listening (to plain ***http*** connections).
+   The hostname `localhost` (or ip address `127.0.0.1`) refers to the machine itself, where you are running this command.
 
-Via the above command you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 443 via a https server, and forward these as http requests to port 1880 on localhost.  The local (Node-RED) service will now become this way ***only accessible within the tailnet*** via https.
+So via the above command you tell the reverse proxy (of the Tailscale agent on the Raspberry) to listen to port 443 (of your Raspberry) via a https server, and forward these as http requests to port 1880 on localhost (i.e. also on your Raspberry). 
+ Which in fact means you are doing port forwarding, but it all happens on the same device (i.e. your Raspberry).
+ 
+The local (Node-RED) service will now become this way ***only accessible within the tailnet*** via https.
 
 Remarks:
 + For enhanced security you might consider not to serve the Node-RED flow editor at all within your tailnet, in case hackers should get access to your tailnet somehow.  But of course then you only can access it directly via the physical ip address or hostname of your device.
