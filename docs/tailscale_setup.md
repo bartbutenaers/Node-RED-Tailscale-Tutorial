@@ -28,7 +28,9 @@ You need to create a Tailscale account once:
 9.	Once you have authorized tailscale (to access your provider account), your identity provider account is linked to your new Tailscale account.
 
 ## Adding devices to your tailnet
-Tailscale agents can be installed on various platforms.  Since a tailnet needs minimal two agents, lets install 3 agents on different platforms:
+Tailscale agents can be installed on various platforms.  You will need to install a Taiscale agent on ***EVERY*** device that need to become part of your tailnet.  Only devices in your tailnet will be able to communicate with each other, via virtual hostnames.
+
+Since a tailnet needs minimal two agents, lets install some agents:
 1. Install a first Tailscale agent on an ***Android smartphone*** like this:
    1. Install the Tailscale app via the Play Store:
 
