@@ -121,3 +121,17 @@ Note that there are two kind of connections being used:
 It would be quite useless to setup a second https connection between the Tailscale agent (on the Raspberry) and Node-RED, because:
 + All the data traffic stays inside your own Raspberry.
 + If you have setup in the past https in Node-RED using a self-signed certificate, the Tailscale agent might even refuse to connect to Node-RED, because it doesn't trust that certificate.
+
+## Serving static files
+To serve a static file, such as an image or audio file, it's possible to serve it via Tailscale using https.
+Firstly, add the file to a directory, for example `/home/pi/images/myimage.png`, and in Node-RED's setting file enable `httpStatic` with the directory's path;
+```
+httpStatic: [
+     {path: '/home/pi/images/',  root: "/images/"},
+     ],
+```
+Execute the following command (on the device running Node-RED), to ***'serve'*** the file via https:
+```
+sudo tailscale serve --https=443 --bg --set-path /icon http://localhost:8443/images/myimage.png
+```
+The file can then be accessed using the url `https://<your-machine-name.your-tailnet-name.ts.net>/icon`.
