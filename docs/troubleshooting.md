@@ -42,3 +42,18 @@ If you enter `https://<your-virtual-hostname>/flow_editor` in the browser addres
 
 In this case it is obvious that the first resource "flow_editor" can be loaded, which is the html file from the Node-RED flow editor.  That html file contains relative url's to all other resources (css, js, ...) it requires.  But those resources cannot be found.  This is probably because there is no `/` at the end of the url, so switch it to `https://<your-virtual-hostname>/flow_editor/`.  For more detailed background information see my explanation in [this](https://discourse.nodered.org/t/not-quite-understanding-how-httpadminroot-works/85097/3?u=bartbutenaers) Discourse discussion.
 
+## MQTT via Tailscale  
+It's possible to use MQTT within your tailnet, so that you can create a client-broker relationship between 2 servers, ensuring that messages are kept secure and within your tailnet.
+
+First we need to bind the Mosquitto broker to the Tailscale IP to ensure it listens only on the tailnet, so on the broker obtain it's tailscale IPv4 address;  
+`tailscale ip`  
+Make a note of it, and then edit the Mosquitto config file - (typically `/etc/mosquitto/mosquitto.conf` or `/etc/mosquitto/conf.d/default.conf`) using your desired port number, and the Tailscale IPv4 address which was obtained above, and add the following;  
+```
+listener 1883 100.x.x.x
+allow_anonymous true
+```  
+Restart Mosquitto, usually `sudo systemctl restart mosquitto`
+
+In the client use the same port number and also the same Tailscale IPv4 address which was obtained above.
+
+NOTE!! If you setup [Access Control](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/tailscale_access_control.md), you may need to change or remove the rule, so that the servers are able to access other servers (between client & broker).
