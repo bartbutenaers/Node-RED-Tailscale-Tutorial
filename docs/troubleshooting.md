@@ -47,13 +47,13 @@ It's possible to use MQTT within your tailnet, so that you can create a client-b
 
 First we need to bind the Mosquitto broker to the Tailscale IP to ensure it listens only on the tailnet, so on the broker obtain it's tailscale IPv4 address;  
 `tailscale ip`  
-Make a note of it, and then edit the Mosquitto config file - (typically `/etc/mosquitto/mosquitto.conf` or `/etc/mosquitto/conf.d/default.conf`), and add the following;  
+Make a note of it, and then edit the Mosquitto config file - (typically `/etc/mosquitto/mosquitto.conf` or `/etc/mosquitto/conf.d/default.conf`) using your desired port number, and the Tailscale IPv4 address which was obtained above, and add the following;  
 ```
 listener 1883 100.x.x.x
 allow_anonymous true
-```
-..using your desired port number, and the Tailscale IPv4 address which was obtained above.  
+```  
 Restart Mosquitto, usually `sudo systemctl restart mosquitto`
 
 In the client use the same port number and also the same Tailscale IPv4 address which was obtained above.
 
+NOTE!! If you setup [Access Control](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/tailscale_access_control.md), you may need to change or remove the rule, so that the servers are able to access other servers (between client & broker).
