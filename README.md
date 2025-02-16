@@ -71,6 +71,13 @@ This tutorial describes in detail how to get started with Tailscale.  The inform
 ## Troubleshooting
 There is a lot of stuff involved, so troubleshooting isn't always easy.  I have created a list of tips from my own experience: see [here](https://github.com/bartbutenaers/Node-RED-Tailscale-Tutorial/blob/main/docs/troubleshooting.md).
 
+## Extra
+Tailscale offers some other nice stuff, not directly related to Node-RED.  But might be interesting anyway:
+1. Get access to your ***Synology NAS*** even when you are not at home (see their [tutorial](https://tailscale.com/kb/1131/synology)).  Please note that their youtube video contains some extra stuff (e.g. to select their LetsEncrypt certificate in the NAS), which is not described in the text below the video. After you have setup this, you can:
+   + Access the web interface of your NAS via `https:\\<your_virtual_nas_device>.<your_tailnet>.ts.net`
+   + Explore the NAS filesystem in your favorite file explorer software via `\\<your_virtual_nas_device>.<your_tailnet>.ts.net\DATA`.
+2. 
+
 ## !!! Disclaimer !!!
 It is important to note that while I try to strive for accuracy, I’m not an expert in this field.  The information provided in this repository is intended to be a helpful guide, but it’s not exhaustive or infallible. While this information can enhance your system’s security, there is no guarantee for complete protection against all potential threats.
 
