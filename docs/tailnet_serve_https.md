@@ -23,6 +23,7 @@ There are a few reasons why you should setup a ***https*** connection through th
 + When ***web-push notifications*** (see e.g. my [node-red-dashboard-2-ui-web-push](https://github.com/bartbutenaers/node-red-dashboard-2-ui-web-push) node) are being used in the Node-RED dashboard, because modern browsers only allow such push notifications when https is used (based on certificates signed by a trusted CA).
 + When ***service workers*** need to run as a background process in your browser, the corresponding js file can only be fetched by the browser when https is being used.
 + When some ***web APIs*** are being called (e.g. acccessing geolocation, camera, microphone, ...), the browser will require https.
++ When a web app needs to be installed (e.g. on an Android smartphone) as a ***Progressive Web App*** (PWA), the browser will require https.
 + And so on ...
 
 Anyway it is quite convenient if you can use https ***all*** over the place, even within your home network (i.e. within your LAN).  Further on we will also explain how your Tailscale agent can be use to provide https for your other local services, like e.g. the web interface of a timeseries database you are running...
