@@ -18,12 +18,14 @@ In both cases the data will be encrypted inside your Tailnet via Wireguard.  But
 
 ## Why use https
 There are a few reasons why you should setup a ***https*** connection through the already encrypted tailnet (which will result in double encryption inside the tailnet):
-+ When you have very confidential data, and you don’t trust that the Tailscale claims their agent don't read your data (before encrypting it via Wireguard).
-+ When the receiver expects https (based on certificates signed by a trusted CA).  For example the Google Action Console servers require such a https connection towards the node-red-contrib-google-smarthome node.
-+ When web-push notifications are being used in the Node-RED dashboard, because modern browsers only allow such notifications when https is used (based on certificates signed by a trusted CA).
++ When you have very ***confidential data***, and you don’t trust that the Tailscale claims their agent don't read your data (before encrypting it via Wireguard).
++ When the ***receiver expects*** https (based on certificates signed by a trusted CA).  For example the Google Action Console servers require such a https connection towards the node-red-contrib-google-smarthome node.
++ When ***web-push notifications*** (see e.g. my [node-red-dashboard-2-ui-web-push](https://github.com/bartbutenaers/node-red-dashboard-2-ui-web-push) node) are being used in the Node-RED dashboard, because modern browsers only allow such push notifications when https is used (based on certificates signed by a trusted CA).
++ When ***service workers*** need to run as a background process in your browser, the corresponding js file can only be fetched by the browser when https is being used.
++ When some ***web APIs*** are being called (e.g. acccessing geolocation, camera, microphone, ...), the browser will require https.
 + And so on ...
 
-Anyway it is quite convenient if you can use https all over the place, even within your home network (i.e. within your LAN).  Further on we will also explain how your Tailscale agent can be use to provide https for your other local services, like e.g. the web interface of a timeseries database you are running...
+Anyway it is quite convenient if you can use https ***all*** over the place, even within your home network (i.e. within your LAN).  Further on we will also explain how your Tailscale agent can be use to provide https for your other local services, like e.g. the web interface of a timeseries database you are running...
 
 ## Enable https in your tailnet
 Previously we have activated DNS within our tailnet.  That is required to be able to use a LetsEncrypt certificate, because the common name of the certificate should be the virtual hostname of your device.  It won't work for virtual ip addresses.
